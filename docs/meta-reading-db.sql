@@ -1,6 +1,6 @@
 CREATE TABLE "performance"(
     "id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "student_id" INTEGER NOT NULL,
     "text_id" INTEGER NOT NULL,
     "value" FLOAT(53) NOT NULL
 );
@@ -27,7 +27,8 @@ CREATE TABLE "users"(
     "name" VARCHAR(255) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
-    "is_teacher" BOOLEAN NOT NULL
+    "role" INTEGER NOT NULL,
+    "avatar_url" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     "users" ADD PRIMARY KEY("id");
@@ -36,14 +37,14 @@ CREATE TABLE "texts"(
     "name" VARCHAR(255) NOT NULL,
     "content" TEXT NOT NULL,
     "difficulty" INTEGER NOT NULL,
-    "image" VARCHAR(255) NULL
+    "cover_url" VARCHAR(255) NULL
 );
 ALTER TABLE
     "texts" ADD PRIMARY KEY("id");
 CREATE TABLE "questions"(
     "id" INTEGER NOT NULL,
     "text_id" INTEGER NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
+    "statement" VARCHAR(255) NOT NULL,
     "difficulty" INTEGER NOT NULL
 );
 ALTER TABLE
@@ -53,7 +54,8 @@ CREATE TABLE "choices"(
     "question_id" INTEGER NOT NULL,
     "content" VARCHAR(255) NOT NULL,
     "is_correct" BOOLEAN NOT NULL,
-    "weight" FLOAT(53) NOT NULL
+    "weight" FLOAT(53) NOT NULL,
+    "statement" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     "choices" ADD PRIMARY KEY("id");
@@ -61,7 +63,7 @@ CREATE TABLE "answers"(
     "id" INTEGER NOT NULL,
     "question_id" INTEGER NOT NULL,
     "choice_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL
+    "student_id" INTEGER NOT NULL
 );
 ALTER TABLE
     "answers" ADD PRIMARY KEY("id");
@@ -82,11 +84,11 @@ ALTER TABLE
 ALTER TABLE
     "users" ADD CONSTRAINT "users_id_foreign" FOREIGN KEY("id") REFERENCES "class_user"("user_id");
 ALTER TABLE
-    "performance" ADD CONSTRAINT "performance_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("name");
+    "performance" ADD CONSTRAINT "performance_student_id_foreign" FOREIGN KEY("student_id") REFERENCES "users"("name");
 ALTER TABLE
     "classes" ADD CONSTRAINT "classes_teacher_id_foreign" FOREIGN KEY("teacher_id") REFERENCES "users"("id");
 ALTER TABLE
-    "answers" ADD CONSTRAINT "answers_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
+    "answers" ADD CONSTRAINT "answers_student_id_foreign" FOREIGN KEY("student_id") REFERENCES "users"("id");
 ALTER TABLE
     "class_text" ADD CONSTRAINT "class_text_text_id_foreign" FOREIGN KEY("text_id") REFERENCES "texts"("id");
 ALTER TABLE
