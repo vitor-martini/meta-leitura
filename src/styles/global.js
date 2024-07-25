@@ -12,15 +12,15 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body { 
-    background-color: ${({ theme }) => theme.COLORS.WHITE};
+    background-color: ${({ theme }) => theme.COLORS.BLUE};
     color: ${({ theme }) => theme.COLORS.BLACK};
     -webkit-font-smoothing: antialiased;
   }
   
   body, input, button, textarea, select {
-     font-family: "Poppins", sans-serif;
+     font-family: "Fredoka", sans-serif;
      color: ${({ theme }) => theme.COLORS.BLACK };
-     font-size: 1.6rem;
+     font-size: 2rem;
      outline: none;
   }
 
@@ -31,6 +31,10 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
     color: ${({ theme }) => theme.COLORS.BLACK }
+  }
+
+  h1 {
+    font-weight: 600;
   }
 
   button, a {
