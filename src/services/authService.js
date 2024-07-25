@@ -10,9 +10,12 @@ async function authenticateUser(email, password) {
   const user = await prisma.user.findUnique({
     where: { email }
   });
+ 
+  if(!user) {
+    throw new AppError("E-mail ou senha inválidos!", 401);
+  }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
-
   if (user && isPasswordValid) {
     const token = jwt.sign({
       userId: user.id,
@@ -21,11 +24,10 @@ async function authenticateUser(email, password) {
     }, SECRET_KEY, { expiresIn: Number(EXPIRES_IN)});
 
     delete user.password;
-    
     return { user, token };
   }
 
-  throw new AppError("E-mail ou senha inválida!", 401);
+  throw new AppError("E-mail ou senha inválidos!", 401);
 }
 
 module.exports = {
