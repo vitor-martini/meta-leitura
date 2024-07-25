@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const AppError = require("../utils/appError");
+const AppError = require("../lib/appError");
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "default";
 

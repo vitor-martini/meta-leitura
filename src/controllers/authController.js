@@ -1,6 +1,6 @@
 const { authenticateUser } = require("../services/authService");
-const createResponse = require("../utils/responseHelper");
-const handleError = require("../utils/errorHandler");
+const createResponse = require("../lib/responseHelper");
+const handleError = require("../lib/errorHandler");
 
 async function login(req) {
   const { email, password } = await req.json();
