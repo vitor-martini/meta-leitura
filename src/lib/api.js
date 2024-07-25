@@ -12,7 +12,6 @@ api.interceptors.response.use(
     const { response } = error;
     if (response.status === 401) {
       localStorage.removeItem("@meta-reading:user");
-      window.location.reload();
     }
 
     return Promise.reject(error);

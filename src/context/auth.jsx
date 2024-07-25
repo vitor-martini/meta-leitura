@@ -14,7 +14,9 @@ export function AuthProvider({ children }) {
       const { user } = response.data; 
       delete user.password;
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
+      return user;
     } catch (error) {
+      console.log(error);
       const errorMessage = error.response?.data?.message;
       if(errorMessage){
         toast.error(errorMessage);
