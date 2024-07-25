@@ -1,9 +1,0 @@
-[build]
-  command = "npm run build && npx prisma generate"
-  publish = ".next"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-[context.production]
-  postBuild = "npm run reset"
