@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { api } from "@/lib/api";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -15,11 +15,11 @@ export function AuthProvider({ children }) {
       delete user.password;
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
     } catch (error) {
-      const errorMessage = error.response.data.message;
+      const errorMessage = error.response?.data?.message;
       if(errorMessage){
-        alert(errorMessage);
+        toast.error(errorMessage);
       } else {
-        alert("Não foi possível logar");
+        toast.error("Não foi possível logar");
       }
     }
   }
