@@ -1,7 +1,8 @@
 "use client";
 import { ThemeProvider } from "styled-components";
-import GlobalStyle from "../styles/global";
-import theme from "../styles/theme";
+import GlobalStyle from "@/styles/global";
+import theme from "@/styles/theme";
+import { AuthProvider } from "@/context/auth";
 
 export default function RootLayout({ children }) {
   return (
@@ -12,8 +13,10 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          {children}
+          <AuthProvider>
+            <GlobalStyle />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
