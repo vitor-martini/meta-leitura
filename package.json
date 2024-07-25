@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "postbuild": "prisma generate",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "reset": "npx prisma migrate reset --force && npx prisma migrate dev --name init && npx prisma generate && node prisma/seed.js",
     "lint": "next lint"
