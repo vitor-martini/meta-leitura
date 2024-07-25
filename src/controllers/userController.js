@@ -1,6 +1,6 @@
-const { getAllUsers } = require("../services/userService");
-const createResponse = require("../lib/responseHelper");
-const handleError = require("../lib/errorHandler");
+const { getAllUsers } = require("@/services/userService");
+const createResponse = require("@/lib/responseHelper");
+const handleError = require("@/lib/errorHandler");
 
 const fetchUsers = async (req) => {
   try {

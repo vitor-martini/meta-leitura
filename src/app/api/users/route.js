@@ -1,6 +1,6 @@
-const { fetchUsers } = require("../../../controllers/userController");
-const { verifyToken } = require("../../../middleware/authMiddleware");
-const errorHandler = require("../../../lib/errorHandler");
+const { fetchUsers } = require("@/controllers/userController");
+const { verifyToken } = require("@/middleware/authMiddleware");
+const errorHandler = require("@/lib/errorHandler");
 
 export async function GET(req) {
   try {

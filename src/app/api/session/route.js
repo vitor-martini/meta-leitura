@@ -1,4 +1,4 @@
-const { login, logout } = require("../../../controllers/authController");
+const { login, logout } = require("@/controllers/authController");
 
 export async function POST(req) {
   return login(req);
