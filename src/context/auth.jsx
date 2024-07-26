@@ -12,7 +12,10 @@ export function AuthProvider({ children }) {
     try {
       const response = await api.post("/session", { email, password });
       const { user } = response.data; 
+
       delete user.password;
+      delete user.role;
+      
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
       return user;
     } catch (error) {
@@ -32,6 +35,11 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("@meta-reading:user");
   }
 
+  async function getUserRole() {
+    const response = await api.get(`/users/${user.id}`);
+    return response.data.user.role;
+  }
+
   useEffect(() => {
     const user = localStorage.getItem("@meta-reading:user");
     if (user) {
@@ -40,7 +48,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{user, login, logout }}>
+    <AuthContext.Provider value={{user, login, logout, getUserRole }}>
       { children }
     </AuthContext.Provider>
   );

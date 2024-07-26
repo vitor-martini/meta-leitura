@@ -2,28 +2,30 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth";
+import roles from "@/lib/roles";
 
 export default function Home() {
-  const { user, logout } = useAuth();
+  const { user, getUserRole, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      router.push("/signin");
-    }
+    const fetchUserRole = async () => {
+      if (!user) {
+        router.push("/signin");
+        return;
+      }
+      const role = await getUserRole();
+      if (role === roles.TEACHER) {
+        router.push("/home/teacher");
+      } else {
+        router.push("/home/student");
+      }
+    };
+
+    fetchUserRole();
   }, [user]);
 
   return (
-    <div>
-      <h1>Home Page</h1>
-      {user ? (
-        <div>
-          <p>Welcome, {user.name}</p>
-          <button onClick={logout}>Logout</button>
-        </div>
-      ) : (
-        <p>Redirecting to Sign In...</p>
-      )}
-    </div>
+    <></>
   );
 }
