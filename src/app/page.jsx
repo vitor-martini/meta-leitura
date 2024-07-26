@@ -3,9 +3,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth";
 import roles from "@/lib/roles";
+import Spinner from "@/components/Spinner";
 
 export default function Home() {
-  const { user, getUserRole, logout } = useAuth();
+  const { user, getUserRole } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +27,8 @@ export default function Home() {
   }, [user]);
 
   return (
-    <></>
+    <>
+      <Spinner/>
+    </>
   );
 }
