@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
+import Link from "next/link";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -96,6 +97,9 @@ const SignUp = () => {
           title={"Cadastrar"}
           onClick={handleSignUp}
         />
+        <Link href="/">
+          Já tenho cadastro
+        </Link>
       </SignUpContainer>
     </Container>
   );
