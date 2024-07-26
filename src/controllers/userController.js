@@ -12,7 +12,15 @@ const create = async (req) => {
   return createResponse({ status: 201 });
 };
 
+const show = async(userId) => {
+  const user = await userService.getUserById(userId);
+  console.log(user);
+
+  return createResponse({ body: { user }});
+};
+
 module.exports = {
   fetchUsers,
-  create
+  create,
+  show
 };

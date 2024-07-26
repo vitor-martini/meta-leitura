@@ -6,6 +6,16 @@ const getAllUsers = async () => {
   return await prisma.user.findMany();
 };
 
+const getUserById = async (id) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      id
+    }
+  });
+
+  return user;
+};
+
 const create = async ({ name, email, password }) => {
   const emailAlreadyRegister = await prisma.user.findFirst({
     where: {
@@ -31,5 +41,6 @@ const create = async ({ name, email, password }) => {
 
 module.exports = {
   getAllUsers,
-  create
+  create,
+  getUserById
 };
