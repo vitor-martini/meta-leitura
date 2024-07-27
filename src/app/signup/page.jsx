@@ -96,6 +96,7 @@ const SignUp = () => {
         <Button
           title={"Cadastrar"}
           onClick={handleSignUp}
+          width={"100%"}
         />
         <Link href="/">
           Já tenho cadastro

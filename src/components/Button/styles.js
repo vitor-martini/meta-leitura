@@ -2,9 +2,12 @@
 import styled from "styled-components";
 
 export const Container = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-transform: uppercase;
-  padding: 2rem;
+  padding: ${({ $padding }) => $padding || "2rem" };
   border-radius: 20px;
-  background-color: ${({ theme }) => theme.COLORS.BLUE};
-  width: 100%;
+  background-color: ${({ theme, $bgColor }) => $bgColor || theme.COLORS.BLUE};
+  width: ${({ $width }) => $width || "auto" };
 `;

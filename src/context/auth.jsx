@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
       delete user.role;
       
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
+      window.location.reload();
       return user;
     } catch (error) {
       console.log(error);
@@ -33,6 +34,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     await api.delete("/session");
     localStorage.removeItem("@meta-reading:user");
+    window.location.reload();
   }
 
   async function getUserRole() {
