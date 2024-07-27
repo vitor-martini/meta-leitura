@@ -2,10 +2,6 @@ const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const bcrypt = require("bcrypt");
 
-const getAllUsers = async () => {
-  return await prisma.user.findMany();
-};
-
 const getUserById = async (id) => {
   const user = await prisma.user.findFirst({
     where: {
@@ -40,7 +36,6 @@ const create = async ({ name, email, password }) => {
 };
 
 module.exports = {
-  getAllUsers,
   create,
   getUserById
 };
