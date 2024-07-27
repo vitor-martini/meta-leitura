@@ -14,8 +14,6 @@ const create = async (req) => {
 
 const show = async(userId) => {
   const user = await userService.getUserById(userId);
-  console.log(user);
-
   return createResponse({ body: { user }});
 };
 

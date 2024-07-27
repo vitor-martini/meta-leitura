@@ -38,6 +38,7 @@ const SignIn = () => {
           alt="Hero Image"
           fill
           quality={100}
+          priority
         />
       </WallpaperContainer>
       <LoginContainer>
