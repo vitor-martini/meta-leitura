@@ -37,9 +37,9 @@ export function AuthProvider({ children }) {
     window.location.reload();
   }
 
-  async function getUserRole() {
-    const response = await api.get(`/users/${user.id}`);
-    return response.data.user.role;
+  async function getAuthUser() {
+    const response = await api.get("/session");
+    return response.data.user;
   }
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{user, login, logout, getUserRole }}>
+    <AuthContext.Provider value={{user, login, logout, getAuthUser }}>
       { children }
     </AuthContext.Provider>
   );

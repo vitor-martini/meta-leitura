@@ -6,7 +6,7 @@ import roles from "@/lib/roles";
 import Spinner from "@/components/Spinner";
 
 export default function Home() {
-  const { user, getUserRole } = useAuth();
+  const { user, getAuthUser } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -15,8 +15,8 @@ export default function Home() {
         router.push("/signin");
         return;
       }
-      const role = await getUserRole();
-      if (role === roles.TEACHER) {
+      const authUser = await getAuthUser();
+      if (authUser.role === roles.TEACHER) {
         router.push("/home/teacher");
       } else {
         router.push("/home/student");

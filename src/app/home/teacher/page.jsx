@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import roles from "@/lib/roles";
 
 const HomeTeacher = () => {
-  const { user, getUserRole } = useAuth();
+  const { user, getAuthUser } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -16,14 +16,15 @@ const HomeTeacher = () => {
         router.push("/signin");
         return;
       }
-      const role = await getUserRole();
-      if (role !== roles.TEACHER) {
+      const authUser = await getAuthUser();
+      if (authUser.role !== roles.TEACHER) {
         router.push("/");
       }
     };
 
     fetchUserRole();
   }, [user]);
+  
   return (
     <Container>
       <Header/>
