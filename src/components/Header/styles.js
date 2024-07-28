@@ -2,6 +2,7 @@
 import styled from "styled-components";
 
 export const Container = styled.header`
+  width: 100%;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 0.8rem 4rem;
@@ -57,4 +58,8 @@ export const AvatarContainer = styled.div`
   height: 6rem;
   position: relative;
   cursor: pointer;
+
+  > img {
+    border-radius: 50%;
+  }
 `;

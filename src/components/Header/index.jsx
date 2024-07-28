@@ -24,6 +24,10 @@ export function Header() {
     router.push("/texts");
   }
   
+  function redirectUser() {
+    router.push("/user");
+  }
+  
   return (
     <Container >
       <MainContainer>
@@ -50,6 +54,7 @@ export function Header() {
            fill 
            quality={100}
            priority
+           onClick={redirectUser}
           />
         </AvatarContainer>
         <Button

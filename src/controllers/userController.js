@@ -8,6 +8,14 @@ const create = async (req) => {
   return createResponse({ status: 201 });
 };
 
+const update = async (req, userId) => {
+  const { name, email, old_password, new_password } = await req.json();
+  await userService.update({ userId, name, email, old_password, new_password });
+
+  return createResponse({ status: 201 });
+};
+
 module.exports = {
-  create
+  create,
+  update
 };

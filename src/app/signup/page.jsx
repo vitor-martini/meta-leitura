@@ -17,7 +17,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   function validateInput() {
