@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
@@ -7,6 +8,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   async function login(email, password) {
     try {
@@ -39,8 +41,12 @@ export function AuthProvider({ children }) {
   }
 
   async function getAuthUser() {
-    const response = await api.get("/session");
-    return response.data.user;
+    try {
+      const response = await api.get("/session");
+      return response.data.user;
+    } catch (error) {
+      router.push("/signin");
+    }
   }
 
   useEffect(() => {
