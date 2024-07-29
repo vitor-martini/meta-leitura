@@ -10,11 +10,75 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "Index",
+					"name": "Create",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Student 21\",\n    \"email\": \"student22@example.com\",\n    \"password\": \"123\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"teacher 1\",\n    \"email\": \"teacher@example.com\",\n    \"old_password\": \"123\",\n    \"new_password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAvatar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"teacher 1\",\n    \"email\": \"teacher@example.com\",\n    \"old_password\": \"123\",\n    \"new_password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "PatchAvatar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": "{{NEXT_URL_API}}/api/users/avatar"
 					},
 					"response": []
 				}
@@ -42,13 +106,34 @@
 					"response": []
 				},
 				{
+					"name": "GetAuthUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"teacher@example.com\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/session"
+					},
+					"response": []
+				},
+				{
 					"name": "Logout",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"teacher@example.com\",\n    \"password\": \"asdasdasd\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"

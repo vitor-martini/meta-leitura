@@ -21,8 +21,7 @@ const User = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const { user: localStorageUser, getAuthUser } = useAuth();
-  const [user, setUser] = useState(null);
+  const { user, setUser, getAuthUser } = useAuth();
   const [newAvatar, setNewAvatar] = useState("");
   const [avatarUrl, setAvatarUrl] = useState(userPlaceholder);
   const router = useRouter();
@@ -69,13 +68,13 @@ const User = () => {
 
       if(newAvatar) {
         const avatarFileName = await uploadAvatar();
-        const avatarUrl = `${api.defaults.baseURL}/public/${avatarFileName}`;
-        localStorageUser.avatar = avatarUrl;
+        user.avatarUrl = avatarFileName;
       }
-
-      localStorageUser.name = name;
-      localStorageUser.email = email;
+      
+      user.name = name;
+      user.email = email;
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
+      setUser(user);
       toast.success("Atualizado com sucesso!");
     } catch(error) {
       console.log(error);
@@ -90,19 +89,18 @@ const User = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getAuthUser();
-      if (user) {
-        setUser(user);
-        setName(user.name);  
-        setEmail(user.email);  
-        setAvatarUrl(user.avatarUrl ? user.avatarUrl : userPlaceholder);
+      const authUser = await getAuthUser();
+      if (authUser) {
+        setName(authUser.name);  
+        setEmail(authUser.email);        
+        setAvatarUrl(authUser?.avatarUrl ? `/uploads/${authUser.avatarUrl}` : userPlaceholder);
       } else {
         router.push("/signin");
       }
     };
 
     fetchUser();
-  }, [getAuthUser, router]);
+  }, [user]);
 
   return (
     <Container>

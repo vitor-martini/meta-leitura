@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 import userPlaceholder from "@/assets/user.png";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Button } from "../Button";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const router = useRouter();
   const { user, logout } = useAuth();
-  const avatarUrl = user?.avatarUrl ? user.avatarUrl : userPlaceholder;
+  const [avatarUrl, setAvatarUrl] = useState(userPlaceholder);
 
   function redirectHome() {
     router.push("/");
@@ -27,6 +28,10 @@ export function Header() {
   function redirectUser() {
     router.push("/user");
   }
+
+  useEffect(() => {
+    setAvatarUrl(user?.avatarUrl ? `/uploads/${user.avatarUrl}` : userPlaceholder);
+  }, [user]);
   
   return (
     <Container >

@@ -15,8 +15,9 @@ export function AuthProvider({ children }) {
 
       delete user.password;
       delete user.role;
-      
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
+      setUser(user);
+
       window.location.reload();
       return user;
     } catch (error) {
@@ -50,7 +51,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{user, login, logout, getAuthUser }}>
+    <AuthContext.Provider value={{user, setUser, login, logout, getAuthUser }}>
       { children }
     </AuthContext.Provider>
   );
