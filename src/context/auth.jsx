@@ -45,6 +45,8 @@ export function AuthProvider({ children }) {
       const response = await api.get("/session");
       return response.data.user;
     } catch (error) {
+      localStorage.removeItem("@meta-reading:user");
+      setUser(null);
       router.push("/signin");
     }
   }

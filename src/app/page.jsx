@@ -16,7 +16,7 @@ export default function Home() {
         return;
       }
       const authUser = await getAuthUser();
-      if (authUser.role === roles.TEACHER) {
+      if (authUser?.role === roles.TEACHER) {
         router.push("/home/teacher");
       } else {
         router.push("/home/student");

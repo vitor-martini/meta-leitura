@@ -12,12 +12,8 @@ const HomeStudent = () => {
 
   useEffect(() => {
     const fetchUserRole = async () => {
-      if (!user) {
-        router.push("/signin");
-        return;
-      }
       const authUser = await getAuthUser();
-      if (authUser.role !== roles.STUDENT) {
+      if (authUser?.role !== roles.STUDENT) {
         router.push("/");
       }
     };

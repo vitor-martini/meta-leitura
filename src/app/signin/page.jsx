@@ -15,7 +15,21 @@ const SignIn = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, login } = useAuth();
+  const { user, login, getAuthUser } = useAuth();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if(user) {
+        const authUser = await getAuthUser();
+        if (!authUser) {
+          router.push("/signin");
+          return;
+        }
+      }
+    };
+
+    fetchUser();
+  }, [user]);
 
   useEffect(() => {
     if(user) {
