@@ -18,11 +18,11 @@ export function Header() {
   }
 
   function redirectClasses() {
-    router.push("/classes");
+    router.push("/dashboard/class");
   }
 
   function redirectTexts() {
-    router.push("/texts");
+    router.push("/dashboard/text");
   }
   
   function redirectUser() {
