@@ -1,5 +1,5 @@
 "use client";
-import { Container } from "./styles";
+import { Container, ContentContainer, Logo } from "./styles";
 import { Header } from "@/components/Header";
 import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,10 @@ const HomeStudent = () => {
   return (
     <Container>
       <Header/>
-      <h1>HomeStudent</h1>
+      <ContentContainer>
+        <Logo src="/favicon.png" alt="Logo"/>
+        <h1>Aperfeiçoe sua leitura!</h1>
+      </ContentContainer>
     </Container>
   );
 };
