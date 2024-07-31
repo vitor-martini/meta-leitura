@@ -2,8 +2,8 @@ const textService = require("@/services/textService");
 const createResponse = require("@/lib/responseHelper");
 const AppError = require("@/lib/appError");
 
-const index = async (req) => {
-  const texts = await textService.getAll();
+const index = async (req, name) => {
+  const texts = await textService.getByName(name);
   return createResponse({ body: { texts: texts }, status: 201 });
 };
 

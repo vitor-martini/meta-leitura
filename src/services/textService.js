@@ -2,8 +2,18 @@ const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 import DiskStorage from "@/lib/diskStorage";
 
-const getAll = async () => {
+const getByName = async (name) => {
+  if(!name) {
+    name = "";  
+  }
+
   const texts = await prisma.text.findMany({
+    where: {
+      name: {
+        contains: name,
+        mode: "insensitive"
+      }
+    },
     orderBy: {
         name: "asc"
       }
@@ -99,5 +109,5 @@ module.exports = {
   update,
   getTextById,
   updateCover,
-  getAll
+  getByName
 };

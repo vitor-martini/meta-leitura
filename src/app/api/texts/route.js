@@ -6,7 +6,10 @@ const textController = require("@/controllers/textController");
 export async function GET(req) {
   try {
     verifyToken(req);
-    return await textController.index(req);
+    const { searchParams } = new URL(req.url);
+    const name = searchParams.get("name");
+    
+    return await textController.index(req, name);
   } catch(error) {
     return handleError(error);
   }
@@ -21,6 +24,7 @@ export async function POST(req) {
     return handleError(error);
   }
 }
+
 export async function PUT(req) {
   try {
     const tokenInfo =  verifyToken(req);
