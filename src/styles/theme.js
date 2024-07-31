@@ -1,7 +1,7 @@
 const theme = {
   COLORS: {
     BLUE: "#a7c7e7",
-    VIOLET: "#8183B1",
+    VIOLET: "#8078bf",
     DARK_BLUE: "#151E3F",
     BLACK: "#011c27",
     WHITE: "#f5f5f5",
