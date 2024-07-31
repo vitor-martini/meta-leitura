@@ -20,7 +20,7 @@ const updateAvatar = async (req, userId) => {
   const file = formData.get("avatar");
 
   if(!file) {
-    return createResponse({ body: { message: "No avatar received" }, status: 400 });
+    return createResponse({ body: { message: "Não foi enviado key 'avatar'" }, status: 400 });
   }
 
   const uniqueFileName = await userService.updateAvatar({ userId, file });
