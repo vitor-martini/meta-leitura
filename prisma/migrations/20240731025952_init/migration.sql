@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('STUDENT', 'TEACHER');
 
 -- CreateEnum
-CREATE TYPE "Difficulty" AS ENUM ('VERY_EASY', 'EASY', 'NORMAL', 'HARD', 'VERY_HARD');
+CREATE TYPE "Difficulty" AS ENUM ('VERY_EASY', 'EASY', 'REGULAR', 'HARD', 'VERY_HARD');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -43,7 +43,7 @@ CREATE TABLE "texts" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "difficulty" "Difficulty" NOT NULL DEFAULT 'NORMAL',
+    "difficulty" "Difficulty" NOT NULL DEFAULT 'REGULAR',
     "cover_url" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE "questions" (
     "id" SERIAL NOT NULL,
     "text_id" INTEGER NOT NULL,
     "statement" TEXT NOT NULL,
-    "difficulty" "Difficulty" NOT NULL DEFAULT 'NORMAL',
+    "difficulty" "Difficulty" NOT NULL DEFAULT 'REGULAR',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
