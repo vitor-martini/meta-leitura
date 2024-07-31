@@ -1,22 +1,40 @@
 "use client";
 import { HeaderContainer, Header, CoverContainer, CardContainer } from "./styles";
 import bookPlaceholder from "@/assets/book-placeholder.png";
+import addPlaceholder from "@/assets/add.png";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export function Card({ data }){
-  const cover = data?.coverUrl ? `/uploads/${data.coverUrl}` : bookPlaceholder;
+  const [cover, setCover] = useState(bookPlaceholder);
+
+  useEffect(() => {
+    if(data.id === 0) {
+      setCover(addPlaceholder);
+      return;
+    }
+
+    if(data?.coverUrl) {
+      setCover(`/uploads/${data.coverUrl}`);
+      return;
+    }
+
+    setCover(bookPlaceholder);
+  }, []);
 
   return (
     <>
       {
         data && (
           <CardContainer>
-            <HeaderContainer>
+            <HeaderContainer $newText={data.id === 0}>
               <Header>
                 <h1>{data.name}</h1>
               </Header>
             </HeaderContainer>
-            <CoverContainer>
+            <CoverContainer
+              $newText={data.id === 0}
+            >
               <Image
                 src={cover} 
                 alt={`Capa do livro ${data.name}`}
@@ -25,7 +43,9 @@ export function Card({ data }){
                 priority
               />
             </CoverContainer>
-            <p>Dificuldade: {data.difficulty}</p>
+            {
+              data.id !== 0 && <p>Dificuldade: {data.difficulty}</p>
+            }
           </CardContainer>
         )
       }

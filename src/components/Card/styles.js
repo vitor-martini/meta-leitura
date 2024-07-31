@@ -11,7 +11,7 @@ export const CardContainer = styled.div`
   overflow: hidden; 
   background-color: ${({ theme }) => theme.COLORS.WHITE };
   width: 320px;
-  height: 360px;
+  height: 320px;
 
   > p {
     margin: 0.8rem 0;
@@ -20,7 +20,7 @@ export const CardContainer = styled.div`
 
 export const HeaderContainer = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.COLORS.DARK_BLUE };
+  background-color: ${({ theme, $newText }) => $newText ? theme.COLORS.PURPLE : theme.COLORS.DARK_BLUE };
   display: flex;
   justify-content: center;
 `;
@@ -37,13 +37,14 @@ export const Header = styled.div`
 `;
 
 export const CoverContainer = styled.div`
-  width: 18rem;
-  height: 24rem;
+  width: ${({ $newText }) => $newText ? "10rem" : "18rem" }; 
+  height: ${({ $newText }) => $newText ? "10rem" : "20rem" }; 
   position: relative;
   cursor: pointer;
   margin: 0.8rem 0;
 
   > img {
     border-radius: 20px;
+    margin-top: ${({ $newText }) => $newText ? "6rem" : "0" }; 
   }
 `;
