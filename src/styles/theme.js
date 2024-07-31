@@ -2,6 +2,8 @@ const theme = {
   COLORS: {
     BLUE: "#a7c7e7",
     WHITE: "#f5f5f5",
+    GREY: "#888",
+    DARK_GREY: "#555",
     BLACK: "#000405",
   }
 };

@@ -22,7 +22,7 @@ export function Header() {
   }
 
   function redirectTexts() {
-    router.push("/dashboard/text");
+    router.push("/text");
   }
   
   function redirectUser() {

@@ -53,6 +53,24 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
+  ::-webkit-scrollbar {
+      width: 1.2rem;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: ${({ theme }) => theme.COLORS.BLUE }; 
+      border-radius: 20px; 
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.COLORS.GREY }; 
+      border-radius: 20px; 
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+      background: ${({ theme }) => theme.COLORS.DARK_GREY }; 
+  }
+
   .sr-only {
     position: absolute;
     width: 1px;
