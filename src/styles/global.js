@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body { 
-    background-color: ${({ theme }) => theme.COLORS.BLUE};
+    background-color: ${({ theme }) => theme.COLORS.VIOLET};
     color: ${({ theme }) => theme.COLORS.BLACK};
     -webkit-font-smoothing: antialiased;
   }
@@ -22,6 +22,10 @@ const GlobalStyle = createGlobalStyle`
      color: ${({ theme }) => theme.COLORS.BLACK };
      font-size: 2rem;
      outline: none;
+  }
+
+  button {
+    color: ${({ theme }) => theme.COLORS.WHITE };
   }
 
   option {
@@ -35,6 +39,11 @@ const GlobalStyle = createGlobalStyle`
 
   h1 {
     font-weight: 600;
+    color: ${({ theme }) => theme.COLORS.BLACK }
+  }
+
+  svg {
+    color: ${({ theme }) => theme.COLORS.BLACK }
   }
 
   button, a {
@@ -58,7 +67,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-      background: ${({ theme }) => theme.COLORS.BLUE }; 
+      background: ${({ theme }) => theme.COLORS.VIOLET }; 
       border-radius: 20px; 
   }
 

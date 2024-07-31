@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  border: 2px solid ${({ theme }) => theme.COLORS.BLUE};
+  border: 2px solid ${({ theme }) => theme.COLORS.VIOLET};
   border-radius: 20px;
   padding: 1.6rem;
 `;

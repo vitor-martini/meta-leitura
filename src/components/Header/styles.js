@@ -6,16 +6,19 @@ export const Container = styled.header`
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 0.8rem 4rem;
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   button {
     transition: none;
+    color: ${({ theme }) => theme.COLORS.BLACK};
   }
 
   button:hover {
-    background-color: ${({ theme }) => theme.COLORS.BLUE};
+    background-color: ${({ theme }) => theme.COLORS.VIOLET};
+    color: ${({ theme }) => theme.COLORS.WHITE};
     filter: brightness(1);
   }
 `;
