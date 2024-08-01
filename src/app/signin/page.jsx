@@ -19,7 +19,6 @@ const SignIn = () => {
 
   async function handleLogin() {
     const user = await login(email, password);
-    console.log(user);
     if (user) {
       router.push("/");
     }
