@@ -6,7 +6,6 @@ async function getRole(request) {
   ? new URL("/api/session", `https://${request.headers.get("host")}`).toString()
   : new URL("/api/session", request.url).toString();
 
-  console.log(apiUrl);
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {
@@ -32,7 +31,6 @@ export async function middleware(request) {
   try {
     role = await getRole(request); 
   } catch (error) {
-    console.log(error);
     if (!["/signin", "/signup"].includes(pathname)) {
       return NextResponse.redirect(new URL("/signin", request.url));
     }
