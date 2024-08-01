@@ -28,32 +28,36 @@ export async function middleware(request) {
   try {
     role = await getRole(request); 
   } catch {
-    if(pathname !== "/signin" && pathname !== "/signup") {
+    if (!["/signin", "/signup"].includes(pathname)) {
       return NextResponse.redirect(new URL("/signin", request.url));
     }
 
     return NextResponse.next();
   }
 
-  if(pathname === "/signin" || pathname === "/signup") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-  
-  if(pathname === "/") {
-    if(role === roles.TEACHER) {
-      return NextResponse.redirect(new URL("/teacher", request.url));
+  const roleBasedRedirections = {
+    "/": {
+      [roles.TEACHER]: "/teacher",
+      [roles.STUDENT]: "/student"
+    },
+    "/text": {
+      [roles.TEACHER]: "/teacher/text",
+      [roles.STUDENT]: "/student/text"
     }
-    if(role === roles.STUDENT) {
-      return NextResponse.redirect(new URL("/student", request.url));
-    }
+  };
+
+  if (pathname in roleBasedRedirections) {
+    return NextResponse.redirect(new URL(roleBasedRedirections[pathname][role], request.url));
   }
 
-  if(pathname === "/text") {
-    if(role === roles.TEACHER) {
-      return NextResponse.redirect(new URL("/teacher/text", request.url));
-    }
-    if(role === roles.STUDENT) {
-      return NextResponse.redirect(new URL("/student/text", request.url));
+  const protectedRoutes = [
+    { path: "/student", role: roles.STUDENT },
+    { path: "/teacher", role: roles.TEACHER },
+  ];
+
+  for (const route of protectedRoutes) {
+    if (pathname.includes(route.path) && role !== route.role) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
@@ -61,5 +65,15 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/signin", "/signup", "/", "/teacher", "/student", "/text", "/teacher/text", "/student/text", "/user"],
+  matcher: [
+    "/signin",
+    "/signup",
+    "/",
+    "/teacher",
+    "/student",
+    "/text",
+    "/teacher/text",
+    "/student/text",
+    "/user"
+  ],
 };
