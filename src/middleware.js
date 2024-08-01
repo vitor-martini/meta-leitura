@@ -27,7 +27,8 @@ export async function middleware(request) {
   let role;
   try {
     role = await getRole(request); 
-  } catch {
+  } catch (error) {
+    console.log(error);
     if (!["/signin", "/signup"].includes(pathname)) {
       return NextResponse.redirect(new URL("/signin", request.url));
     }
