@@ -1,6 +1,7 @@
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 import DiskStorage from "@/lib/diskStorage";
+const difficulties = require("@/lib/difficulties");
 
 const getByName = async (name) => {
   if(!name) {
@@ -18,6 +19,8 @@ const getByName = async (name) => {
         name: "asc"
       }
   });
+  texts.map(x => x.difficulty = difficulties[x.difficulty]);
+
   return texts;
 };
 
