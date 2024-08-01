@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import roles from "./lib/roles";
 
 async function getRole(request) {
-  const apiUrl = new URL("/api/session", request.url).toString();
+  const apiUrl = process.env.NODE_ENV === "production"
+  ? new URL("/api/session", `https://${request.headers.get("host")}`).toString()
+  : new URL("/api/session", request.url).toString();
+
+  console.log(apiUrl);
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {
