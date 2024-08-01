@@ -88,18 +88,11 @@ const User = () => {
   }
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const authUser = await getAuthUser();
-      if (authUser) {
-        setName(authUser.name);  
-        setEmail(authUser.email);        
-        setAvatarUrl(authUser?.avatarUrl ? `/uploads/${authUser.avatarUrl}` : userPlaceholder);
-      } else {
-        router.push("/signin");
-      }
-    };
-
-    fetchUser();
+    if(user) {
+      setName(user.name);  
+      setEmail(user.email);        
+      setAvatarUrl(user?.avatarUrl ? `/uploads/${user.avatarUrl}` : userPlaceholder);
+    }
   }, [user]);
 
   return (

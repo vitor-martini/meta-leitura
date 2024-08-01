@@ -7,6 +7,8 @@ import { Card } from "@/components/Card";
 import { api } from "@/lib/api";
 import { useTheme } from "styled-components";
 import { CiSearch } from "react-icons/ci";
+import { useAuth } from "@/context/auth";
+import { useRouter } from "next/navigation";
 
 const TextDashboard = () => {
   const theme = useTheme();

@@ -18,7 +18,7 @@ export function Header() {
   }
 
   function redirectClasses() {
-    router.push("/dashboard/class");
+    router.push("/class");
   }
 
   function redirectTexts() {
@@ -27,6 +27,11 @@ export function Header() {
   
   function redirectUser() {
     router.push("/user");
+  }
+
+  async function handleLogout() {
+    await logout();
+    router.push("/signin");
   }
 
   useEffect(() => {
@@ -65,7 +70,7 @@ export function Header() {
         <Button
           icon={IoLogOutOutline}
           bgColor={"transparent"}
-          onClick={logout}
+          onClick={handleLogout}
         />
       </OptionsContainer>
     </Container>
