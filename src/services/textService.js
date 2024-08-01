@@ -45,13 +45,15 @@ const create = async ({ name, difficulty, content }) => {
     throw new AppError("Já existe um texto com esse nome!", 400);
   }
 
-  await prisma.text.create({
+  const newText = await prisma.text.create({
     data: {
       name,
       difficulty,
       content
     }
   });
+
+  return newText.id;
 };
 
 const update = async ({ id, name, difficulty, content }) => {

@@ -1,11 +1,11 @@
 "use client";
-import { HeaderContainer, Header, CoverContainer, CardContainer } from "./styles";
+import { Container, HeaderContainer, Header, CoverContainer, CardContainer } from "./styles";
 import bookPlaceholder from "@/assets/book-placeholder.png";
 import addPlaceholder from "@/assets/add.png";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export function Card({ data }){
+export function Card({ data, onClick }){
   const [cover, setCover] = useState(bookPlaceholder);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function Card({ data }){
   }, []);
 
   return (
-    <>
+    <Container onClick={onClick}>
       {
         data && (
           <CardContainer>
@@ -49,6 +49,6 @@ export function Card({ data }){
           </CardContainer>
         )
       }
-    </>
+    </Container>
   );
 } 

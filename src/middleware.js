@@ -73,6 +73,7 @@ export const config = {
     "/student",
     "/text",
     "/teacher/text",
+    "/teacher/text/new",
     "/student/text",
     "/user"
   ],

@@ -7,10 +7,10 @@ import { Card } from "@/components/Card";
 import { api } from "@/lib/api";
 import { useTheme } from "styled-components";
 import { CiSearch } from "react-icons/ci";
-import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
 
 const TextDashboard = () => {
+  const router = useRouter();
   const theme = useTheme();
   const [texts, setTexts] = useState([]);
   const [search, setSearch] = useState("");
@@ -18,6 +18,10 @@ const TextDashboard = () => {
     id: 0,
     name: "Adicionar novo texto"
   };
+
+  function handleNew() {
+    router.push("/teacher/text/new");
+  }
 
   useEffect(() => {
     async function fetchTexts() {
@@ -43,7 +47,7 @@ const TextDashboard = () => {
       <ContentContainer>
         {
           !search && (
-            <Card
+            <Card onClick={handleNew}
               data={newText} 
             />
           )

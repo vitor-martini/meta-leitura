@@ -1,6 +1,5 @@
 "use client";
 import { useAuth } from "@/context/auth";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Container, UserContainer, AvatarContainer, CameraContainer } from "./styles";
 import { Header } from "@/components/Header";
@@ -21,10 +20,9 @@ const User = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const { user, setUser, getAuthUser } = useAuth();
+  const { user, setUser } = useAuth();
   const [newAvatar, setNewAvatar] = useState("");
   const [avatarUrl, setAvatarUrl] = useState(userPlaceholder);
-  const router = useRouter();
 
   function handleAvatarChange(event) {
     const file = event.target.files[0];

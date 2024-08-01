@@ -13,8 +13,8 @@ const create = async (req) => {
     throw new AppError("Dados obrigatórios não informados!", 400);
   }
 
-  await textService.create({ name, difficulty, content });
-  return createResponse({ status: 201 });
+  const id = await textService.create({ name, difficulty, content });
+  return createResponse({ body: { id }, status: 201 });
 };
 
 const update = async (req) => {
