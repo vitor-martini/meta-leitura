@@ -1,7 +1,6 @@
 todo.txt
 
 public/
-!public/favicon.png
 
 # dependencies
 /node_modules
