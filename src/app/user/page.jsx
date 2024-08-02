@@ -13,8 +13,10 @@ import Image from "next/image";
 import userPlaceholder from "@/assets/user.png";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 const User = () => {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -73,7 +75,12 @@ const User = () => {
       user.email = email;
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
       setUser(user);
-      toast.success("Atualizado com sucesso!");
+      toast.success("Atualizado com sucesso!", {
+        onClose: () => {
+          router.push("/");
+        },
+        autoClose: 1500, 
+      });
     } catch(error) {
       console.log(error);
       const errorMessage = error.response?.data?.message;
