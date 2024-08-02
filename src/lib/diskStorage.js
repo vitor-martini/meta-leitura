@@ -1,17 +1,13 @@
 const fs = require("fs");
 const path = require("path");
-const UPLOADS_FOLDER = path.resolve(process.cwd(), "public", "uploads");
+const UPLOADS_FOLDER = path.resolve(process.cwd(), "public");
 const crypto = require("crypto");
 
 class DiskStorage {
   async save(fileName, buffer) {
     const fileHash = crypto.randomBytes(10).toString("hex");
-    const uniqueFileName = `${fileHash}-${fileName}`;
+    const uniqueFileName = `${fileHash}-${fileName.replace(" ", "-")}`;
     await fs.promises.writeFile(path.resolve(UPLOADS_FOLDER, uniqueFileName), buffer);
-
-    // Log directory contents
-    const files = await fs.promises.readdir(UPLOADS_FOLDER);
-    console.log("Files in uploads folder:", files);
 
     return uniqueFileName;
   }
