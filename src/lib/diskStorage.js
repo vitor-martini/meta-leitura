@@ -6,13 +6,18 @@ const sharp = require("sharp");
 
 class DiskStorage {
   async save(fileName, buffer) {
-    const fileHash = crypto.randomBytes(10).toString("hex");
-    const baseName = fileName.split(".").slice(0, -1).join(".").replace(" ", "-");
-    const uniqueFileName = `${fileHash}-${baseName}.png`;
-    const pngBuffer = await sharp(buffer).png().toBuffer();
-    await fs.promises.writeFile(path.resolve(UPLOADS_FOLDER, uniqueFileName), pngBuffer);
+    try {
+      const fileHash = crypto.randomBytes(10).toString("hex");
+      const baseName = fileName.split(".").slice(0, -1).join(".").replace(" ", "-");
+      const uniqueFileName = `${fileHash}-${baseName}.png`;
+      const pngBuffer = await sharp(buffer).png().toBuffer();
+      await fs.promises.writeFile(path.resolve(UPLOADS_FOLDER, uniqueFileName), pngBuffer);
+      console.log(`Saving image to ${path.resolve(UPLOADS_FOLDER, uniqueFileName)}`);
   
-    return uniqueFileName;
+      return uniqueFileName;
+    } catch (error) {
+      console.error(`Error saving file: ${error.message}`);
+    }
   }
 
   async delete(fileName) {
