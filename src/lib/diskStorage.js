@@ -9,6 +9,9 @@ class DiskStorage {
     const uniqueFileName = `${fileHash}-${fileName}`;
     await fs.promises.writeFile(path.resolve(UPLOADS_FOLDER, uniqueFileName), buffer);
 
+    console.log(UPLOADS_FOLDER);
+    console.log(path.resolve(UPLOADS_FOLDER, uniqueFileName));
+
     return uniqueFileName;
   }
 
