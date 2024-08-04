@@ -15,7 +15,7 @@ export function Card({ data, onClick }){
     }
 
     if(data?.coverUrl) {
-      setCover(`/${data.coverUrl}`);
+      setCover(`${data.coverUrl}`);
       return;
     }
 

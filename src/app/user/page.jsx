@@ -96,7 +96,7 @@ const User = () => {
     if(user) {
       setName(user.name);  
       setEmail(user.email);        
-      setAvatarUrl(user?.avatarUrl ? `/${user.avatarUrl}` : userPlaceholder);
+      setAvatarUrl(user?.avatarUrl ? `${user.avatarUrl}` : userPlaceholder);
     }
   }, [user]);
 
