@@ -51,7 +51,7 @@ const TextDashboard = () => {
       return false;
     }
 
-    loading(true);
+    setLoading(true);
     try {
       const response = await api.post("/texts", {
         name: title,
@@ -75,7 +75,7 @@ const TextDashboard = () => {
         toast.error("Não foi possível atualizar");
       }
     } finally {
-      loading(false);
+      setLoading(false);
     }
   }
 
