@@ -1,6 +1,23 @@
 "use client";
 import styled from "styled-components";
 
+export const Container = styled.div`
+  > div {
+    margin-top: 2rem;
+  }
+
+  > button {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    margin: 2rem auto;
+    background-color: ${({ theme }) => theme.COLORS.PURPLE };
+    color: ${({ theme }) => theme.COLORS.WHITE };
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  }
+`;
+
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,10 +41,10 @@ export const CoverContainer = styled.div`
   height: 250px;
   position: relative;
   border-radius: 20px;
-  border: 2px solid ${({ theme }) => theme.COLORS.VIOLET};
+  border: 4px solid ${({ theme }) => theme.COLORS.PURPLE};
 
   > img {
-    border-radius: 20px;
+    border-radius: 16px;
   }
 `;
 
@@ -35,7 +52,7 @@ export const CameraContainer = styled.label`
   cursor: pointer;
   border-radius: 50%;
   padding: 1.2rem;
-  background-color: ${({ theme }) => theme.COLORS.VIOLET };
+  background-color: ${({ theme }) => theme.COLORS.PURPLE };
   position: absolute;
   bottom: -16px;
   right: -16px;
@@ -46,6 +63,7 @@ export const CameraContainer = styled.label`
 
   svg {
     cursor: pointer;
+    color: ${({ theme }) => theme.COLORS.WHITE };
   }
 `;
 

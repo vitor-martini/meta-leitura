@@ -17,11 +17,11 @@ import { api } from "@/lib/api";
 const TextDashboard = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [difficulty, setDifficulty] = useState(null);
+  const [difficulty, setDifficulty] = useState(0);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [difficulties, setDifficulties] = useState([
-    { id: null, name: "SELECIONE A DIFICULDADE" },
+    { id: 0, name: "SELECIONE A DIFICULDADE" },
     { id: "VERY_EASY", name: "MUITO FÁCIL" },
     { id: "EASY", name: "FÁCIL" },
     { id: "REGULAR", name: "MÉDIO" },
@@ -47,7 +47,7 @@ const TextDashboard = () => {
   }
 
   async function handleSave() {
-    if (!title || !difficulty || !content) {
+    if (!title || !difficulty|| !content) {
       toast.error("Preencha todos os campos!");
       return false;
     }
@@ -81,7 +81,7 @@ const TextDashboard = () => {
   }
 
   return (
-    <>
+    <Container>
       {
         loading && (
           <LoadingPage/>
@@ -119,18 +119,27 @@ const TextDashboard = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
+          </FieldsContainer>
+        </ContentContainer>
+
+        <ContentContainer>
+          <FieldsContainer>
+            <Input 
+              placeholder="Pergunta"
+            />
             <Button
-              title={"Salvar"}
-              onClick={handleSave}
+              title={"Inserir"}
             />
           </FieldsContainer>
-          {/* <QuestionsContainer>
-            <input type="text" placeholder="Pergunta" />
-            <button>SALVAR</button>
-          </QuestionsContainer> */}
         </ContentContainer>
+        <Button
+          title={"Salvar"}
+          width={"100%"}
+          maxWidth={"800px"}
+          onClick={handleSave}
+        />
       </>
-    </>
+    </Container>
   );
 };
 
