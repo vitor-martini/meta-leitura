@@ -17,10 +17,11 @@ import { api } from "@/lib/api";
 const TextDashboard = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [difficulty, setDifficulty] = useState("REGULAR");
+  const [difficulty, setDifficulty] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [difficulties, setDifficulties] = useState([
+    { id: null, name: "SELECIONE A DIFICULDADE" },
     { id: "VERY_EASY", name: "MUITO FÁCIL" },
     { id: "EASY", name: "FÁCIL" },
     { id: "REGULAR", name: "MÉDIO" },
@@ -46,8 +47,8 @@ const TextDashboard = () => {
   }
 
   async function handleSave() {
-    if (!title || !content) {
-      toast.error("Título e conteúdo são obrigatórios!");
+    if (!title || !difficulty || !content) {
+      toast.error("Preencha todos os campos!");
       return false;
     }
 
@@ -86,51 +87,49 @@ const TextDashboard = () => {
           <LoadingPage/>
         )
       }
-      <Container>
+      <>
         <Header/>
         <ContentContainer>
-          <TextContainer>
-            <CoverContainer>
-              <Image
-                src={coverUrl} 
-                alt="Capa do livro" 
-                fill 
-                quality={100}
-                priority
-              />
-              <CameraContainer htmlFor="avatar">
-                <input type="file" id="avatar" onChange={handleAvatarChange}/>
-                <FaCamera size={60}/>
-              </CameraContainer>
-            </CoverContainer>
-            <FieldsContainer>
-              <Input 
-                placeholder="Título"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <SelectInput
-                items={difficulties}
-                selectedOption={difficulty}
-                setSelectedOption={setDifficulty}
-              />
-              <TextArea 
-                placeholder="Conteúdo"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <Button
-                title={"Salvar"}
-                onClick={handleSave}
-              />
-            </FieldsContainer>
-            {/* <QuestionsContainer>
-              <input type="text" placeholder="Pergunta" />
-              <button>SALVAR</button>
-            </QuestionsContainer> */}
-          </TextContainer>
+          <CoverContainer>
+            <Image
+              src={coverUrl} 
+              alt="Capa do livro" 
+              fill 
+              quality={100}
+              priority
+            />
+            <CameraContainer htmlFor="avatar">
+              <input type="file" id="avatar" onChange={handleAvatarChange}/>
+              <FaCamera size={30}/>
+            </CameraContainer>
+          </CoverContainer>
+          <FieldsContainer>
+            <Input 
+              placeholder="Título"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <SelectInput
+              items={difficulties}
+              selectedOption={difficulty}
+              setSelectedOption={setDifficulty}
+            />
+            <TextArea 
+              placeholder="Conteúdo"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <Button
+              title={"Salvar"}
+              onClick={handleSave}
+            />
+          </FieldsContainer>
+          {/* <QuestionsContainer>
+            <input type="text" placeholder="Pergunta" />
+            <button>SALVAR</button>
+          </QuestionsContainer> */}
         </ContentContainer>
-      </Container>
+      </>
     </>
   );
 };
