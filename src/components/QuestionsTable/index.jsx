@@ -1,5 +1,4 @@
-"use client";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa";
 import { Container, Table, TableRow, TableHeader, TableCell, ToggleButton, OptionsRow } from "./styles";
 
@@ -29,8 +28,8 @@ export function QuestionsTable({ questions, setQuestions }) {
         </thead>
         <tbody>
           {questions.map((question, i) => (
-            <>
-              <TableRow key={i}>
+            <Fragment key={i}>
+              <TableRow>
                 <TableCell>{`${i + 1} - ${question.question}`}</TableCell>
                 <TableCell>
                   <ToggleButton onClick={() => handleToggleOptions(i)}>
@@ -59,7 +58,7 @@ export function QuestionsTable({ questions, setQuestions }) {
                   </td>
                 </OptionsRow>
               )}
-            </>
+            </Fragment>
           ))}
         </tbody>
       </Table>
