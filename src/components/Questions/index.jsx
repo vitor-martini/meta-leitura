@@ -1,5 +1,5 @@
 "use client";
-import { Container, QuestionContainer, QuestionHeader} from "./styles";
+import { Container } from "./styles";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { OptionInput } from "@/components/OptionInput";
@@ -93,10 +93,14 @@ export function Questions({ questions, setQuestions }) {
         title={"Inserir"}
         onClick={handleInsertQuestion}
       />
-      <QuestionsTable
-        questions={questions}
-        setQuestions={setQuestions}
-      />
+      {
+        questions && questions.length > 0 && (
+          <QuestionsTable
+            questions={questions}
+            setQuestions={setQuestions}
+          />
+        )
+      }
     </Container>
   );
 }
