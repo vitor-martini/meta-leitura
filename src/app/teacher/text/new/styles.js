@@ -29,7 +29,7 @@ export const ContentContainer = styled.div`
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 2rem;
-  gap: 2rem;
+  gap: 1.6rem;
 `;
 
 export const CoverContainer = styled.div`
@@ -71,7 +71,7 @@ export const FieldsContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
   width: 100%;
 
   > button {
@@ -81,10 +81,4 @@ export const FieldsContainer = styled.div`
   > textarea {
     height: 30vh;
   }
-`;
-
-export const QuestionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 `;

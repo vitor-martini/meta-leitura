@@ -5,6 +5,7 @@ import bookPlaceholder from "@/assets/book-placeholder.png";
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
+import { Questions } from "@/components/Questions";
 import { TextArea } from "@/components/TextArea";
 import { LoadingPage } from "@/components/LoadingPage";
 import { Button } from "@/components/Button";
@@ -30,6 +31,7 @@ const TextDashboard = () => {
   ]);
   const [newCover, setNewCover] = useState("");
   const [coverUrl, setCoverUrl] = useState(bookPlaceholder);
+  const [questions, setQuestions] = useState([]);
 
   function handleAvatarChange(event) {
     const file = event.target.files[0];
@@ -49,7 +51,7 @@ const TextDashboard = () => {
   async function handleSave() {
     if (!title || !difficulty|| !content) {
       toast.error("Preencha todos os campos!");
-      return false;
+      return;
     }
 
     setLoading(true);
@@ -124,11 +126,9 @@ const TextDashboard = () => {
 
         <ContentContainer>
           <FieldsContainer>
-            <Input 
-              placeholder="Pergunta"
-            />
-            <Button
-              title={"Inserir"}
+            <Questions
+              questions={questions}
+              setQuestions={setQuestions}
             />
           </FieldsContainer>
         </ContentContainer>
