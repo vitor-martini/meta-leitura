@@ -76,7 +76,6 @@ CREATE TABLE "questions" (
     "id" SERIAL NOT NULL,
     "text_id" INTEGER NOT NULL,
     "statement" TEXT NOT NULL,
-    "difficulty" "Difficulty" NOT NULL DEFAULT 'REGULAR',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -88,7 +87,6 @@ CREATE TABLE "choices" (
     "id" SERIAL NOT NULL,
     "question_id" INTEGER NOT NULL,
     "is_correct" BOOLEAN NOT NULL DEFAULT false,
-    "weight" DOUBLE PRECISION NOT NULL,
     "content" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
