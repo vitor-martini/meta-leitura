@@ -29,28 +29,33 @@ export function Questions({ questions, setQuestions }) {
   }
 
   function handleInsertQuestion() {
-    if(!question || !choiceA || !choiceB || !choiceC || !choiceD) {
+    if (!question || !choiceA || !choiceB || !choiceC || !choiceD) {
       toast.error("Preencha todos os campos!");
       return;
     }
-
-    if(!selectedChoice) {
+  
+    if (!selectedChoice) {
       toast.error("Selecione uma opção para ser a correta!");
       return;
     }
-
+  
+    const choices = [
+      { content: choiceA, isCorrect: selectedChoice === "A" },
+      { content: choiceB, isCorrect: selectedChoice === "B" },
+      { content: choiceC, isCorrect: selectedChoice === "C" },
+      { content: choiceD, isCorrect: selectedChoice === "D" },
+    ];
+  
     const questionObj = {
       question,
-      choiceA,
-      choiceB,
-      choiceC,
-      choiceD,
-      correctChoice: selectedChoice
+      choices
     };
-
+    
+    console.log(questionObj);
     setQuestions([...questions, questionObj]);
     clearFields();
   }
+  
 
   return (
     <Container>

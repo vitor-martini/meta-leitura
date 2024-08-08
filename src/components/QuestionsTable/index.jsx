@@ -42,18 +42,16 @@ export function QuestionsTable({ questions, setQuestions }) {
                 <ChoicesRow>
                   <td colSpan="2">
                     <ul>
-                      <li className={question.correctChoice === "A" ? "correct" : "incorrect"}>
-                        {question.choiceA}
-                      </li>
-                      <li className={question.correctChoice === "B" ? "correct" : "incorrect"}>
-                        {question.choiceB}
-                      </li>
-                      <li className={question.correctChoice === "C" ? "correct" : "incorrect"}>
-                        {question.choiceC}
-                      </li>
-                      <li className={question.correctChoice === "D" ? "correct" : "incorrect"}>
-                        {question.choiceD}
-                      </li>
+                      {
+                        question.choices.map((choice, i) => (
+                          <li 
+                            key={i} 
+                            className={choice.isCorrect ? "correct" : "incorrect"}
+                          >
+                            {choice.content}
+                          </li>
+                        ))
+                      }
                     </ul>
                   </td>
                 </ChoicesRow>
