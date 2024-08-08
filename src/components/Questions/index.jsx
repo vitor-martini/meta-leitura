@@ -8,6 +8,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export function Questions({ questions, setQuestions }) {
+  const [questionIndex, setQuestionIndex] = useState("");
   const [statement, setStatement] = useState("");
   const [choiceA, setChoiceA] = useState("");
   const [choiceB, setChoiceB] = useState("");
@@ -26,6 +27,7 @@ export function Questions({ questions, setQuestions }) {
     setChoiceC("");
     setChoiceD("");
     setSelectedChoice("");
+    setQuestionIndex("");
   }
 
   function handleInsertQuestion() {
@@ -51,8 +53,12 @@ export function Questions({ questions, setQuestions }) {
       choices
     };
     
-    console.log(questionObj);
-    setQuestions([...questions, questionObj]);
+    if(Number(questionIndex)) {
+      setQuestions(questions.map((q, index) => index === questionIndex ? questionObj : q));
+    } else {
+      setQuestions([...questions, questionObj]);
+    }
+
     clearFields();
   }
   
@@ -103,6 +109,13 @@ export function Questions({ questions, setQuestions }) {
           <QuestionsTable
             questions={questions}
             setQuestions={setQuestions}
+            setStatement={setStatement}
+            setChoiceA={setChoiceA}
+            setChoiceB={setChoiceB}
+            setChoiceC={setChoiceC}
+            setChoiceD={setChoiceD}
+            setSelectedChoice={setSelectedChoice}
+            setQuestionIndex={setQuestionIndex}
           />
         )
       }

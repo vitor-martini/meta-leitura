@@ -1,8 +1,18 @@
 import { Fragment, useState } from "react";
-import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaTrashAlt, FaPencilAlt } from "react-icons/fa";
 import { Container, Table, TableRow, TableHeader, TableCell, ToggleButton, ChoicesRow } from "./styles";
 
-export function QuestionsTable({ questions, setQuestions }) {
+export function QuestionsTable({ 
+    questions, 
+    setQuestions, 
+    setStatement,
+    setChoiceA,
+    setChoiceB,
+    setChoiceC,
+    setChoiceD,
+    setSelectedChoice,
+    setQuestionIndex
+  }) {
   const [expandedRows, setExpandedRows] = useState([]);
 
   function handleToggleChoices(index) {
@@ -17,6 +27,21 @@ export function QuestionsTable({ questions, setQuestions }) {
     setQuestions((prevQuestions) => prevQuestions.filter((_, i) => i !== index));
   }
 
+  function handleEdit(index) {
+    const question = questions[index];
+    setStatement(question.statement);
+    setChoiceA(question.choices[0].content);
+    setChoiceB(question.choices[1].content);
+    setChoiceC(question.choices[2].content);
+    setChoiceD(question.choices[3].content);
+
+    const correctChoiceIndex = question.choices.findIndex(choice => choice.isCorrect);
+    const selectedChoice = String.fromCharCode(65 + correctChoiceIndex); 
+  
+    setSelectedChoice(selectedChoice);
+    setQuestionIndex(index);
+  }
+  
   return (
     <Container>
       <Table>
@@ -33,8 +58,9 @@ export function QuestionsTable({ questions, setQuestions }) {
                 <TableCell>{`${i + 1} - ${question.statement}`}</TableCell>
                 <TableCell>
                   <ToggleButton onClick={() => handleToggleChoices(i)}>
-                    {expandedRows.includes(i) ? <FaMinus /> : <FaPlus />}
+                    {expandedRows.includes(i) ? <FaEyeSlash /> : <FaEye />}
                   </ToggleButton>
+                  <FaPencilAlt onClick={() => handleEdit(i)}/>
                   <FaTrashAlt onClick={() => handleRemove(i)}/>
                 </TableCell>
               </TableRow>

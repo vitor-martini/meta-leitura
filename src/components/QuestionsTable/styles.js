@@ -32,6 +32,7 @@ export const TableCell = styled.td`
 
   svg {
     cursor: pointer;
+    margin-right: 1rem;
   }
 
   svg:hover {
@@ -46,11 +47,13 @@ export const TableHeader = styled.th`
   background-color: ${({ theme }) => theme.COLORS.LIGHT};
   border-bottom: none;
   width: 100%;
+  &:last-child {
+    text-align: center;
+  }
 `;
 
 export const ToggleButton = styled.button`
   background: none;
-  margin-right: 1rem;
 
   &:hover {
     color: ${({ theme }) => theme.COLORS.VIOLET};
