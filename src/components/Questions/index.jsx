@@ -8,7 +8,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export function Questions({ questions, setQuestions }) {
-  const [question, setQuestion] = useState("");
+  const [statement, setStatement] = useState("");
   const [choiceA, setChoiceA] = useState("");
   const [choiceB, setChoiceB] = useState("");
   const [choiceC, setChoiceC] = useState("");
@@ -20,7 +20,7 @@ export function Questions({ questions, setQuestions }) {
   }
 
   function clearFields() {
-    setQuestion("");
+    setStatement("");
     setChoiceA("");
     setChoiceB("");
     setChoiceC("");
@@ -29,7 +29,7 @@ export function Questions({ questions, setQuestions }) {
   }
 
   function handleInsertQuestion() {
-    if (!question || !choiceA || !choiceB || !choiceC || !choiceD) {
+    if (!statement || !choiceA || !choiceB || !choiceC || !choiceD) {
       toast.error("Preencha todos os campos!");
       return;
     }
@@ -47,7 +47,7 @@ export function Questions({ questions, setQuestions }) {
     ];
   
     const questionObj = {
-      question,
+      statement,
       choices
     };
     
@@ -60,9 +60,9 @@ export function Questions({ questions, setQuestions }) {
   return (
     <Container>
       <Input 
-        placeholder="Pergunta"
-        value={question}
-        onChange={e => setQuestion(e.target.value)}
+        placeholder="Enunciado"
+        value={statement}
+        onChange={e => setStatement(e.target.value)}
       />
       
       <ChoiceInput 

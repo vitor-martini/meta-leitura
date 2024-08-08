@@ -35,26 +35,49 @@ const getTextById = async (id) => {
   return text;
 };
 
-const create = async ({ name, difficulty, content }) => {
-  const textAlreadyRegister = await prisma.text.findFirst({
-    where: {
-      name
+const create = async ({ name, difficulty, content, questions }) => {
+  const result = await prisma.$transaction(async (prisma) => {
+    const textAlreadyRegister = await prisma.text.findFirst({
+      where: {
+        name
+      }
+    });
+
+    if (textAlreadyRegister) {
+      throw new AppError("Já existe um texto com esse nome!", 400);
     }
+
+    const newText = await prisma.text.create({
+      data: {
+        name,
+        difficulty,
+        content
+      }
+    });
+
+    for (const question of questions) {
+      const newQuestion = await prisma.question.create({
+        data: {
+          statement: question.statement,
+          textId: newText.id, 
+        }
+      });
+
+      for(const choice of question.choices) {
+        await prisma.choice.create({
+          data: {
+            questionId: newQuestion.id,
+            isCorrect: choice.isCorrect,
+            content: choice.content
+          }
+        });
+      }
+    }
+
+    return newText.id;
   });
 
-  if (textAlreadyRegister) {
-    throw new AppError("Já existe um texto com esse nome!", 400);
-  }
-
-  const newText = await prisma.text.create({
-    data: {
-      name,
-      difficulty,
-      content
-    }
-  });
-
-  return newText.id;
+  return result;
 };
 
 const update = async ({ id, name, difficulty, content }) => {

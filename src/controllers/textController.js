@@ -8,12 +8,12 @@ const index = async (req, name) => {
 };
 
 const create = async (req) => {
-  const { name, difficulty, content } = await req.json();
-  if(!name || !difficulty|| !content) {
+  const { name, difficulty, content, questions } = await req.json();
+  if(!name || !difficulty || !content || !questions || questions.length === 0) {
     throw new AppError("Dados obrigatórios não informados!", 400);
   }
 
-  const id = await textService.create({ name, difficulty, content });
+  const id = await textService.create({ name, difficulty, content, questions });
   return createResponse({ body: { id }, status: 201 });
 };
 

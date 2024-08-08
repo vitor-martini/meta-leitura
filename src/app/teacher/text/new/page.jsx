@@ -54,12 +54,18 @@ const TextDashboard = () => {
       return;
     }
 
+    if (!questions || questions.length === 0) {
+      toast.error("Insira perguntas!");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await api.post("/texts", {
         name: title,
         difficulty,
-        content
+        content,
+        questions
       });
 
       const id = response.data.id;

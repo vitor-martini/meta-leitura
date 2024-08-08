@@ -30,7 +30,7 @@ export function QuestionsTable({ questions, setQuestions }) {
           {questions.map((question, i) => (
             <Fragment key={i}>
               <TableRow>
-                <TableCell>{`${i + 1} - ${question.question}`}</TableCell>
+                <TableCell>{`${i + 1} - ${question.statement}`}</TableCell>
                 <TableCell>
                   <ToggleButton onClick={() => handleToggleChoices(i)}>
                     {expandedRows.includes(i) ? <FaMinus /> : <FaPlus />}
@@ -48,7 +48,7 @@ export function QuestionsTable({ questions, setQuestions }) {
                             key={i} 
                             className={choice.isCorrect ? "correct" : "incorrect"}
                           >
-                            {choice.content}
+                           {`${String.fromCharCode(97 + i)}) ${choice.content}`}
                           </li>
                         ))
                       }
