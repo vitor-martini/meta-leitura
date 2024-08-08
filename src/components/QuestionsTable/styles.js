@@ -57,7 +57,7 @@ export const ToggleButton = styled.button`
   }
 `;
 
-export const OptionsRow = styled.tr`
+export const ChoicesRow = styled.tr`
   background-color: ${({ theme }) => theme.COLORS.LIGHT};
 
   li {

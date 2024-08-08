@@ -4,7 +4,7 @@ import { Input } from "@/components/Input";
 import { Checkbox } from "@/components/Checkbox";
 import { useTheme } from "styled-components";
 
-export function OptionInput({ label, value, setValue, checked, onCheck }) {
+export function ChoiceInput({ label, value, setValue, checked, onCheck }) {
   const theme = useTheme();
   
   return (

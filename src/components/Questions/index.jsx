@@ -2,50 +2,50 @@
 import { Container } from "./styles";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
-import { OptionInput } from "@/components/OptionInput";
+import { ChoiceInput } from "@/components/ChoiceInput";
 import { QuestionsTable } from "@/components/QuestionsTable";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 export function Questions({ questions, setQuestions }) {
   const [question, setQuestion] = useState("");
-  const [optionA, setOptionA] = useState("");
-  const [optionB, setOptionB] = useState("");
-  const [optionC, setOptionC] = useState("");
-  const [optionD, setOptionD] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+  const [choiceA, setChoiceA] = useState("");
+  const [choiceB, setChoiceB] = useState("");
+  const [choiceC, setChoiceC] = useState("");
+  const [choiceD, setChoiceD] = useState("");
+  const [selectedChoice, setSelectedChoice] = useState("");
 
-  function handleCheck(option) {
-    setSelectedOption(option);
+  function handleCheck(choice) {
+    setSelectedChoice(choice);
   }
 
   function clearFields() {
     setQuestion("");
-    setOptionA("");
-    setOptionB("");
-    setOptionC("");
-    setOptionD("");
-    setSelectedOption("");
+    setChoiceA("");
+    setChoiceB("");
+    setChoiceC("");
+    setChoiceD("");
+    setSelectedChoice("");
   }
 
   function handleInsertQuestion() {
-    if(!question || !optionA || !optionB || !optionC || !optionD) {
+    if(!question || !choiceA || !choiceB || !choiceC || !choiceD) {
       toast.error("Preencha todos os campos!");
       return;
     }
 
-    if(!selectedOption) {
+    if(!selectedChoice) {
       toast.error("Selecione uma opção para ser a correta!");
       return;
     }
 
     const questionObj = {
       question,
-      optionA,
-      optionB,
-      optionC,
-      optionD,
-      correctOption: selectedOption
+      choiceA,
+      choiceB,
+      choiceC,
+      choiceD,
+      correctChoice: selectedChoice
     };
 
     setQuestions([...questions, questionObj]);
@@ -60,32 +60,32 @@ export function Questions({ questions, setQuestions }) {
         onChange={e => setQuestion(e.target.value)}
       />
       
-      <OptionInput 
+      <ChoiceInput 
         label="Opção A"
-        value={optionA}
-        setValue={setOptionA}
-        checked={selectedOption === "A"}
+        value={choiceA}
+        setValue={setChoiceA}
+        checked={selectedChoice === "A"}
         onCheck={() => handleCheck("A")}
       />
-      <OptionInput 
+      <ChoiceInput 
         label="Opção B"
-        value={optionB}
-        setValue={setOptionB}
-        checked={selectedOption === "B"}
+        value={choiceB}
+        setValue={setChoiceB}
+        checked={selectedChoice === "B"}
         onCheck={() => handleCheck("B")}
       />
-      <OptionInput 
+      <ChoiceInput 
         label="Opção C"
-        value={optionC}
-        setValue={setOptionC}
-        checked={selectedOption === "C"}
+        value={choiceC}
+        setValue={setChoiceC}
+        checked={selectedChoice === "C"}
         onCheck={() => handleCheck("C")}
       />
-      <OptionInput 
+      <ChoiceInput 
         label="Opção D"
-        value={optionD}
-        setValue={setOptionD}
-        checked={selectedOption === "D"}
+        value={choiceD}
+        setValue={setChoiceD}
+        checked={selectedChoice === "D"}
         onCheck={() => handleCheck("D")}
       />
 
