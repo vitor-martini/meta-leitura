@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 
-const TextDashboard = () => {
+const NewText = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [difficulty, setDifficulty] = useState(0);
@@ -149,4 +149,4 @@ const TextDashboard = () => {
   );
 };
 
-export default TextDashboard;
+export default NewText;
