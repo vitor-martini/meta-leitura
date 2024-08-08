@@ -14,7 +14,8 @@ const getByName = async (name) => {
       name: {
         contains: name,
         mode: "insensitive"
-      }
+      }, 
+      active: true
     },
     orderBy: {
         name: "asc"
@@ -32,7 +33,32 @@ const getTextById = async (id) => {
     }
   });
 
-  return text;
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  const questions = await prisma.question.findMany({
+    where: {
+      textId: text.id
+    }
+  });
+
+  for(const question of questions) {
+    const choices = await prisma.choice.findMany({
+      where: {
+        questionId: question.id
+      }
+    });
+
+    question.choices = choices;
+  }
+
+  const textObj = {
+    text,
+    questions
+  };
+
+  return textObj;
 };
 
 const create = async ({ name, difficulty, content, questions }) => {

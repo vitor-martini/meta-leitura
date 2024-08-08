@@ -4,7 +4,12 @@ const AppError = require("@/lib/appError");
 
 const index = async (req, name) => {
   const texts = await textService.getByName(name);
-  return createResponse({ body: { texts: texts }, status: 201 });
+  return createResponse({ body: { texts: texts }, status: 200 });
+};
+
+const show = async (textId) => {
+  const text = await textService.getTextById(textId);
+  return createResponse({ body: { text }, status: 200 });
 };
 
 const create = async (req) => {
@@ -44,5 +49,6 @@ module.exports = {
   updateCover,
   create,
   update,
-  index
+  index,
+  show
 };
