@@ -8,7 +8,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export function Questions({ questions, setQuestions }) {
-  const [questionIndex, setQuestionIndex] = useState("");
+  const [questionIndex, setQuestionIndex] = useState(undefined);
   const [statement, setStatement] = useState("");
   const [choiceA, setChoiceA] = useState("");
   const [choiceB, setChoiceB] = useState("");
@@ -20,6 +20,22 @@ export function Questions({ questions, setQuestions }) {
     setSelectedChoice(choice);
   }
 
+  function handleEdit(index) {
+    const question = questions[index];
+    setStatement(question.statement);
+    setChoiceA(question.choices[0].content);
+    setChoiceB(question.choices[1].content);
+    setChoiceC(question.choices[2].content);
+    setChoiceD(question.choices[3].content);
+
+    const correctChoiceIndex = question.choices.findIndex(choice => choice.isCorrect);
+    const selectedChoice = String.fromCharCode(65 + correctChoiceIndex); 
+  
+    setSelectedChoice(selectedChoice);
+    setQuestionIndex(index);
+    console.log(index);
+  }
+
   function clearFields() {
     setStatement("");
     setChoiceA("");
@@ -27,7 +43,7 @@ export function Questions({ questions, setQuestions }) {
     setChoiceC("");
     setChoiceD("");
     setSelectedChoice("");
-    setQuestionIndex("");
+    setQuestionIndex(undefined);
   }
 
   function handleInsertQuestion() {
@@ -53,7 +69,7 @@ export function Questions({ questions, setQuestions }) {
       choices
     };
     
-    if(Number(questionIndex)) {
+    if(Number(questionIndex) >= 0) {
       setQuestions(questions.map((q, index) => index === questionIndex ? questionObj : q));
     } else {
       setQuestions([...questions, questionObj]);
@@ -110,12 +126,7 @@ export function Questions({ questions, setQuestions }) {
             questions={questions}
             setQuestions={setQuestions}
             setStatement={setStatement}
-            setChoiceA={setChoiceA}
-            setChoiceB={setChoiceB}
-            setChoiceC={setChoiceC}
-            setChoiceD={setChoiceD}
-            setSelectedChoice={setSelectedChoice}
-            setQuestionIndex={setQuestionIndex}
+            handleEdit={handleEdit}
           />
         )
       }

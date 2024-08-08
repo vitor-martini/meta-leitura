@@ -2,17 +2,7 @@ import { Fragment, useState } from "react";
 import { FaEye, FaEyeSlash, FaTrashAlt, FaPencilAlt } from "react-icons/fa";
 import { Container, Table, TableRow, TableHeader, TableCell, ToggleButton, ChoicesRow } from "./styles";
 
-export function QuestionsTable({ 
-    questions, 
-    setQuestions, 
-    setStatement,
-    setChoiceA,
-    setChoiceB,
-    setChoiceC,
-    setChoiceD,
-    setSelectedChoice,
-    setQuestionIndex
-  }) {
+export function QuestionsTable({ questions, setQuestions, handleEdit }) {
   const [expandedRows, setExpandedRows] = useState([]);
 
   function handleToggleChoices(index) {
@@ -25,21 +15,6 @@ export function QuestionsTable({
 
   function handleRemove(index) {
     setQuestions((prevQuestions) => prevQuestions.filter((_, i) => i !== index));
-  }
-
-  function handleEdit(index) {
-    const question = questions[index];
-    setStatement(question.statement);
-    setChoiceA(question.choices[0].content);
-    setChoiceB(question.choices[1].content);
-    setChoiceC(question.choices[2].content);
-    setChoiceD(question.choices[3].content);
-
-    const correctChoiceIndex = question.choices.findIndex(choice => choice.isCorrect);
-    const selectedChoice = String.fromCharCode(65 + correctChoiceIndex); 
-  
-    setSelectedChoice(selectedChoice);
-    setQuestionIndex(index);
   }
   
   return (
