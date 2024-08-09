@@ -5,6 +5,7 @@ import {
   Container, 
   CameraContainer, 
   ContentContainer, 
+  BackButtonContainer,
   CoverContainer, 
   FieldsContainer, 
   ButtonsContainer,
@@ -21,6 +22,7 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { Button } from "@/components/Button";
 import { SelectInput } from "@/components/SelectInput";
 import { FaCamera } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 import Modal from "react-modal";
@@ -150,6 +152,9 @@ const EditText = () => {
       {loading && <LoadingPage />}
       <Header />
       <ContentContainer>
+        <BackButtonContainer onClick={() => router.back()}>
+          <IoMdArrowRoundBack size={60}/>
+        </BackButtonContainer>
         <CoverContainer>
           {coverUrl && ( 
             <Image

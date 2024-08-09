@@ -19,6 +19,25 @@ export const ContentContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 2rem;
   gap: 1.6rem;
+  position: relative;
+`;
+
+
+export const BackButtonContainer = styled.div`
+  position: absolute;
+  cursor: pointer;
+  padding: 0.4rem;
+  top: 16px;
+  left: 16px;
+  background-color: ${({ theme }) => theme.COLORS.PURPLE };
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > svg {
+    color: ${({ theme }) => theme.COLORS.WHITE};
+  }
 `;
 
 export const CoverContainer = styled.div`
