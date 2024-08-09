@@ -32,6 +32,7 @@ const EditText = () => {
   const theme = useTheme();
   const { id } = useParams(); 
   const router = useRouter();
+  const [isNew, setIsNew] = useState(false);
   const [loading, setLoading] = useState(false);
   const [difficulty, setDifficulty] = useState(0);
   const [title, setTitle] = useState(""); 
@@ -53,6 +54,11 @@ const EditText = () => {
     Modal.setAppElement("#__next");
     
     async function fetchText() {
+      if(id === "new") {
+        setIsNew(true);
+        return;
+      }
+
       try {
         const result = await api.get(`/texts/${id}`);
         const text = result?.data?.text.text;
@@ -64,8 +70,9 @@ const EditText = () => {
         setQuestions(text.questions); 
         setCoverUrl(text.coverUrl || bookPlaceholder); 
         setQuestions(questions);
+        setIsNew(false);
       } catch {
-        router.push("/");
+        router.push("/teacher/text");
       }
     }
 
@@ -121,18 +128,30 @@ const EditText = () => {
 
     setLoading(true);
     try {
-      await api.put(`/texts/${id}`, {
-        name: title,
-        difficulty,
-        content,
-        questions
-      });
-
-      if (newCover) {
-        await uploadCover(id);
+      let textId = id;
+      if(isNew) {
+        const response = await api.post("/texts", {
+          name: title,
+          difficulty,
+          content,
+          questions
+        });
+  
+        textId = response.data.id;
+      } else {
+        await api.put(`/texts/${textId}`, {
+          name: title,
+          difficulty,
+          content,
+          questions
+        });
       }
 
-      sessionStorage.setItem("messageStorage", "Atualizado com sucesso!");
+      if (newCover) {
+        await uploadCover(textId);
+      }
+
+      sessionStorage.setItem("messageStorage", `${isNew ? "Cadastrado" : "Atualizado"} com sucesso!`);
       router.push("/teacher/text");
     } catch (error) {
       console.log(error);
@@ -234,7 +253,11 @@ const EditText = () => {
             <h2>Deseja mesmo excluir?</h2>
             <ModalButtonsContent>
               <Button title={"Sim"} width={"100%"} onClick={confirmDelete} />
-              <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
+              {
+                !isNew && (
+                  <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
+                )
+              }
             </ModalButtonsContent>
           </ModalContent>
         </Modal>
