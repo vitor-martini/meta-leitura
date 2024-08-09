@@ -18,8 +18,8 @@ const getByName = async (name) => {
       active: true
     },
     orderBy: {
-        name: "asc"
-      }
+      name: "asc"
+    }
   });
   texts.map(x => x.difficulty = difficulties[x.difficulty]);
 
@@ -60,7 +60,11 @@ const getById = async (id) => {
 
   const questions = await prisma.question.findMany({
     where: {
-      textId: text.id
+      textId: text.id,
+      active: true
+    },
+    orderBy: {
+      createdAt: "asc"
     }
   });
 
@@ -127,7 +131,8 @@ const create = async ({ name, difficulty, content, questions }) => {
   return result;
 };
 
-const update = async ({ id, name, difficulty, content }) => {
+const update = async ({ id, name, difficulty, content, questions }) => {
+  //check if new name is valid
   const checkName = await prisma.text.findFirst({
     where: {
       name: name,
@@ -141,14 +146,87 @@ const update = async ({ id, name, difficulty, content }) => {
     throw new AppError("Esse nome já está vinculado a outro texto!");
   }
 
-  await prisma.text.update({
+  //get old questions
+  const oldQuestions = await prisma.question.findMany({
     where: {
-      id: id
-    },
-    data: {
-      name: name,
-      difficulty: difficulty,
-      content: content
+      textId: id
+    }
+  });
+
+  await prisma.$transaction(async (prisma) => {
+
+    //update text
+    await prisma.text.update({
+      where: {
+        id: id
+      },
+      data: {
+        name: name,
+        difficulty: difficulty,
+        content: content
+      }
+    });
+  
+    //create the new questions
+    for (const question of questions.filter(q => !q.id)) { 
+      const newQuestion = await prisma.question.create({
+        data: {
+          statement: question.statement,
+          textId: id, 
+        }
+      });
+  
+      //create choices of new question
+      for(const choice of question.choices) {
+        await prisma.choice.create({
+          data: {
+            questionId: newQuestion.id,
+            isCorrect: choice.isCorrect,
+            content: choice.content
+          }
+        });
+      }
+    }
+
+    //inactive the questions that was removed
+    for (const removedQuestion of oldQuestions.filter(oldQ => 
+      !questions.some(newQ => newQ.id === oldQ.id)
+    )) {
+      await prisma.question.update({
+        where: {
+          id: removedQuestion.id
+        },
+        data: {
+          active: false
+        }
+      });
+    }
+
+    //updated questions
+    for (const updatedQuestion of questions.filter(upQ => 
+      oldQuestions.some(oldQ => oldQ.id === upQ.id)
+    )) {
+      //update statement of the question
+      await prisma.question.update({
+        where: {
+          id: updatedQuestion.id
+        },
+        data: {
+          statement: updatedQuestion.statement
+        }
+      });
+
+      for(const choice of updatedQuestion.choices) {
+        await prisma.choice.update({
+          where: {
+            id: choice.id
+          },
+          data: {
+            isCorrect: choice.isCorrect,
+            content: choice.content
+          }
+        });
+      }
     }
   });
 };
