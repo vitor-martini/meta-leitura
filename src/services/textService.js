@@ -86,18 +86,33 @@ const getById = async (id) => {
   return textObj;
 };
 
-const create = async ({ name, difficulty, content, questions }) => {
-  const result = await prisma.$transaction(async (prisma) => {
-    const textAlreadyRegister = await prisma.text.findFirst({
+const validateName = async(id, name) => {
+  let text;
+  if(id) {
+    text = await prisma.text.findFirst({
+      where: {
+        name: name,
+        id: {
+          not: id
+        }
+      }
+    });
+  } else {
+    text = await prisma.text.findFirst({
       where: {
         name
       }
     });
+  }
 
-    if (textAlreadyRegister) {
-      throw new AppError("Já existe um texto com esse nome!", 400);
-    }
+  if(text) {
+    throw new AppError("Esse nome já está vinculado a outro texto!");
+  }
+};
 
+const create = async ({ name, difficulty, content, questions }) => {
+  await validateName(null, name);
+  const result = await prisma.$transaction(async (prisma) => {
     const newText = await prisma.text.create({
       data: {
         name,
@@ -132,19 +147,7 @@ const create = async ({ name, difficulty, content, questions }) => {
 };
 
 const update = async ({ id, name, difficulty, content, questions }) => {
-  //check if new name is valid
-  const checkName = await prisma.text.findFirst({
-    where: {
-      name: name,
-      id: {
-        not: id
-      }
-    }
-  });
-
-  if(checkName) {
-    throw new AppError("Esse nome já está vinculado a outro texto!");
-  }
+  await validateName(id, name);
 
   //get old questions
   const oldQuestions = await prisma.question.findMany({
