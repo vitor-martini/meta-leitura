@@ -146,10 +146,76 @@ const create = async ({ name, difficulty, content, questions }) => {
   return result;
 };
 
+const createNewQuestions = async(questions, id) => {
+  for (const question of questions.filter(q => !q.id)) { 
+    const newQuestion = await prisma.question.create({
+      data: {
+        statement: question.statement,
+        textId: id, 
+      }
+    });
+
+    for(const choice of question.choices) {
+      await prisma.choice.create({
+        data: {
+          questionId: newQuestion.id,
+          isCorrect: choice.isCorrect,
+          content: choice.content
+        }
+      });
+    }
+  }
+};
+
+const inactivateRemovedQuestions = async(questions, oldQuestions) => {
+  oldQuestions = oldQuestions.filter(oldQ => 
+    !questions.some(newQ => newQ.id === oldQ.id)
+  );
+
+  for (const removedQuestion of oldQuestions) {
+    await prisma.question.update({
+      where: {
+        id: removedQuestion.id
+      },
+      data: {
+        active: false
+      }
+    });
+  }
+};
+
+const updateQuestions = async(questions, oldQuestions) => {
+  questions = questions.filter(upQ => 
+    oldQuestions.some(oldQ => oldQ.id === upQ.id)
+  );
+
+  for (const updatedQuestion of questions) {
+    await prisma.question.update({
+      where: {
+        id: updatedQuestion.id
+      },
+      data: {
+        statement: updatedQuestion.statement
+      }
+    });
+
+    for(const choice of updatedQuestion.choices) {
+      await prisma.choice.update({
+        where: {
+          id: choice.id
+        },
+        data: {
+          isCorrect: choice.isCorrect,
+          content: choice.content
+        }
+      });
+    }
+  }
+};
+
 const update = async ({ id, name, difficulty, content, questions }) => {
   await validateName(id, name);
 
-  //get old questions
   const oldQuestions = await prisma.question.findMany({
     where: {
       textId: id
@@ -157,8 +223,6 @@ const update = async ({ id, name, difficulty, content, questions }) => {
   });
 
   await prisma.$transaction(async (prisma) => {
-
-    //update text
     await prisma.text.update({
       where: {
         id: id
@@ -170,67 +234,9 @@ const update = async ({ id, name, difficulty, content, questions }) => {
       }
     });
   
-    //create the new questions
-    for (const question of questions.filter(q => !q.id)) { 
-      const newQuestion = await prisma.question.create({
-        data: {
-          statement: question.statement,
-          textId: id, 
-        }
-      });
-  
-      //create choices of new question
-      for(const choice of question.choices) {
-        await prisma.choice.create({
-          data: {
-            questionId: newQuestion.id,
-            isCorrect: choice.isCorrect,
-            content: choice.content
-          }
-        });
-      }
-    }
-
-    //inactive the questions that was removed
-    for (const removedQuestion of oldQuestions.filter(oldQ => 
-      !questions.some(newQ => newQ.id === oldQ.id)
-    )) {
-      await prisma.question.update({
-        where: {
-          id: removedQuestion.id
-        },
-        data: {
-          active: false
-        }
-      });
-    }
-
-    //updated questions
-    for (const updatedQuestion of questions.filter(upQ => 
-      oldQuestions.some(oldQ => oldQ.id === upQ.id)
-    )) {
-      //update statement of the question
-      await prisma.question.update({
-        where: {
-          id: updatedQuestion.id
-        },
-        data: {
-          statement: updatedQuestion.statement
-        }
-      });
-
-      for(const choice of updatedQuestion.choices) {
-        await prisma.choice.update({
-          where: {
-            id: choice.id
-          },
-          data: {
-            isCorrect: choice.isCorrect,
-            content: choice.content
-          }
-        });
-      }
-    }
+    await createNewQuestions(questions, id);
+    await inactivateRemovedQuestions(questions, oldQuestions);
+    await updateQuestions(questions, oldQuestions);
   });
 };
 
