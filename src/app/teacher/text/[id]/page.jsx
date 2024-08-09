@@ -223,13 +223,17 @@ const EditText = () => {
           maxWidth={"800px"}
           onClick={handleSave}
         />
-        <Button
-          title={"Excluir"}
-          width={"100%"}
-          maxWidth={"800px"}
-          onClick={handleDelete}
-          bgColor={theme.COLORS.DARK_RED}
-        />
+        {
+          !isNew && (
+            <Button
+              title={"Excluir"}
+              width={"100%"}
+              maxWidth={"800px"}
+              onClick={handleDelete}
+              bgColor={theme.COLORS.DARK_RED}
+            />
+          )
+        }
       </ButtonsContainer>
       {isModalOpen && (
         <Modal
@@ -253,11 +257,7 @@ const EditText = () => {
             <h2>Deseja mesmo excluir?</h2>
             <ModalButtonsContent>
               <Button title={"Sim"} width={"100%"} onClick={confirmDelete} />
-              {
-                !isNew && (
-                  <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
-                )
-              }
+              <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
             </ModalButtonsContent>
           </ModalContent>
         </Modal>
