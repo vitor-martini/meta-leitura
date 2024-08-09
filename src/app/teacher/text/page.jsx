@@ -35,10 +35,10 @@ const TextDashboard = () => {
   }, [search]);
 
   useEffect(() => {
-    const message = sessionStorage.getItem("deleteSuccess");
+    const message = sessionStorage.getItem("messageStorage");
     if (message) {
       toast.success(message);
-      sessionStorage.removeItem("deleteSuccess"); 
+      sessionStorage.removeItem("messageStorage"); 
     }
   }, []);
 

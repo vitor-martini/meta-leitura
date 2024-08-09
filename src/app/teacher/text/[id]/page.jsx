@@ -81,7 +81,7 @@ const EditText = () => {
   async function confirmDelete() {
     try {
       await api.delete(`/texts/${id}`);
-      sessionStorage.setItem("deleteSuccess", "Excluído com sucesso!");
+      sessionStorage.setItem("messageStorage", "Excluído com sucesso!");
       router.push("/teacher/text");
     } catch (error) {
       console.log(error);
@@ -130,8 +130,8 @@ const EditText = () => {
         await uploadCover(id);
       }
 
-      toast.success("Texto atualizado com sucesso!");
-      router.back();
+      sessionStorage.setItem("messageStorage", "Atualizado com sucesso!");
+      router.push("/teacher/text");
     } catch (error) {
       console.log(error);
       const errorMessage = error.response?.data?.message;
