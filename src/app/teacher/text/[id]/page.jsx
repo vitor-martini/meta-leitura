@@ -119,19 +119,18 @@ const EditText = () => {
 
     setLoading(true);
     try {
-      const response = await api.post("/texts", {
+      await api.put(`/texts/${id}`, {
         name: title,
         difficulty,
         content,
         questions
       });
 
-      const id = response.data.id;
       if (newCover) {
         await uploadCover(id);
       }
 
-      toast.success("Texto criado com sucesso!");
+      toast.success("Texto atualizado com sucesso!");
       router.back();
     } catch (error) {
       console.log(error);
