@@ -15,3 +15,15 @@ export async function GET(req) {
     return handleError(error);
   }
 }
+
+export async function DELETE(req) {
+  try {
+    const tokenInfo =  verifyToken(req);
+    verifyTeacherRole(tokenInfo);
+    const textId = getIdFromUrl(req);
+
+    return await textController.destroy(textId);
+  } catch(error) {
+    return handleError(error);
+  }
+}

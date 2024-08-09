@@ -26,7 +26,28 @@ const getByName = async (name) => {
   return texts;
 };
 
-const getTextById = async (id) => {
+const deleteById = async (id) => {
+  const text = await prisma.text.findFirst({
+    where: {
+      id
+    }
+  });
+
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  await prisma.text.update({
+    where: {
+      id: text.id
+    },
+    data: {
+      active: false
+    }
+  });
+};
+
+const getById = async (id) => {
   const text = await prisma.text.findFirst({
     where: {
       id
@@ -133,7 +154,7 @@ const update = async ({ id, name, difficulty, content }) => {
 };
 
 const updateCover = async ({ textId, file }) => {
-  const text = await getTextById(textId);
+  const text = await getById(textId);
   if(!text) {
     throw new AppError("Não existe texto com esse ID!", 400);
   }
@@ -163,7 +184,8 @@ const updateCover = async ({ textId, file }) => {
 module.exports = {
   create,
   update,
-  getTextById,
+  getById,
   updateCover,
-  getByName
+  getByName,
+  deleteById
 };

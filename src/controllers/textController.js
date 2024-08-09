@@ -8,8 +8,13 @@ const index = async (req, name) => {
 };
 
 const show = async (textId) => {
-  const text = await textService.getTextById(textId);
+  const text = await textService.getById(textId);
   return createResponse({ body: { text }, status: 200 });
+};
+
+const destroy = async (textId) => {
+  await textService.deleteById(textId);
+  return createResponse({ body: { message: "Inativado com sucesso!"}, status: 200 });
 };
 
 const create = async (req) => {
@@ -50,5 +55,6 @@ module.exports = {
   create,
   update,
   index,
-  show
+  show,
+  destroy
 };
