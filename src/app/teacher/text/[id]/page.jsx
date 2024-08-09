@@ -7,8 +7,9 @@ import {
   ContentContainer, 
   CoverContainer, 
   FieldsContainer, 
+  ButtonsContainer,
   ModalContent, 
-  ButtonsContent 
+  ModalButtonsContent
 } from "./styles";
 import bookPlaceholder from "@/assets/book-placeholder.png"; 
 import Image from "next/image";
@@ -23,8 +24,10 @@ import { FaCamera } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 import Modal from "react-modal";
+import { useTheme } from "styled-components";
 
 const EditText = () => {
+  const theme = useTheme();
   const { id } = useParams(); 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -75,8 +78,20 @@ const EditText = () => {
     setCoverUrl(newCover);
   }
 
-  function confirmDelete() {
-    console.log(`Deleting item with id ${id}`);
+  async function confirmDelete() {
+    try {
+      await api.delete(`/texts/${id}`);
+      sessionStorage.setItem("deleteSuccess", "Excluído com sucesso!");
+      router.push("/teacher/text");
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error.response?.data?.message;
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error("Não foi possível excluir");
+      }
+    }
     setIsModalOpen(false);
   }
 
@@ -178,19 +193,21 @@ const EditText = () => {
           />
         </FieldsContainer>
       </ContentContainer>
-      <Button
-        title={"Salvar"}
-        width={"100%"}
-        maxWidth={"800px"}
-        onClick={handleSave}
-      />
-      <Button
-        title={"Excluir"}
-        width={"100%"}
-        maxWidth={"800px"}
-        onClick={handleDelete}
-      />
-
+      <ButtonsContainer>
+        <Button
+          title={"Salvar"}
+          width={"100%"}
+          maxWidth={"800px"}
+          onClick={handleSave}
+        />
+        <Button
+          title={"Excluir"}
+          width={"100%"}
+          maxWidth={"800px"}
+          onClick={handleDelete}
+          bgColor={theme.COLORS.DARK_RED}
+        />
+      </ButtonsContainer>
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
@@ -211,10 +228,10 @@ const EditText = () => {
         >
           <ModalContent>
             <h2>Deseja mesmo excluir?</h2>
-            <ButtonsContent>
+            <ModalButtonsContent>
               <Button title={"Sim"} width={"100%"} onClick={confirmDelete} />
               <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
-            </ButtonsContent>
+            </ModalButtonsContent>
           </ModalContent>
         </Modal>
       )}
