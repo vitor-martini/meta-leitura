@@ -1,7 +1,14 @@
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
-
+const crypto = require("crypto");
 const prisma = new PrismaClient();
+
+function generateRandomCode(length) {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  return Array.from(crypto.randomBytes(length))
+      .map(byte => characters[byte % characters.length])
+      .join("");
+}
 
 async function createUsers() {
   const saltRounds = 10;
@@ -36,10 +43,12 @@ async function createClasses() {
   });
 
   for (let i = 1; i <= 2; i++) {
+    const accessKey = generateRandomCode(8);
     const newClass = await prisma.class.create({
       data: {
         name: `Class ${i}`,
         teacherId: teacher.id,
+        accessKey
       },
     });
 

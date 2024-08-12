@@ -26,10 +26,10 @@ model User {
 
 model Class {
   id        Int         @id @default(autoincrement())
+  accessKey String      @map("access_key")
   name      String
   teacher   User        @relation(fields: [teacherId], references: [id])
   teacherId Int         @map("teacher_id")
-  color     String?
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
   classUser ClassUser[]
