@@ -32,6 +32,7 @@ model Class {
   teacherId Int         @map("teacher_id")
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
+  active    Boolean     @default(true)
   classUser ClassUser[]
   classText ClassText[]
 
