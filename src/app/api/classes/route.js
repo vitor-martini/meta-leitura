@@ -5,11 +5,12 @@ const classController = require("@/controllers/classController");
 
 export async function GET(req) {
   try {
-    verifyToken(req);
+    const tokenInfo =  verifyToken(req);
+    verifyTeacherRole(tokenInfo);
     const { searchParams } = new URL(req.url);
     const name = searchParams.get("name");
     
-    return await classController.index(req, name);
+    return await classController.index(req, name, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }
@@ -19,7 +20,7 @@ export async function POST(req) {
   try {
     const tokenInfo =  verifyToken(req);
     verifyTeacherRole(tokenInfo);
-    return await classController.create(req);
+    return await classController.create(req, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }

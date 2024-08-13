@@ -2,7 +2,7 @@ import roles from "@/lib/roles";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 
-const getByName = async (name) => {
+const getByName = async (name, userId) => {
   if(!name) {
     name = "";  
   }
@@ -13,7 +13,8 @@ const getByName = async (name) => {
         contains: name,
         mode: "insensitive"
       }, 
-      active: true
+      active: true,
+      teacherId: userId
     },
     orderBy: {
       name: "asc"
@@ -23,7 +24,7 @@ const getByName = async (name) => {
   return classes;
 };
 
-const deleteById = async (id) => {
+const deleteById = async (id, userId) => {
   const classroom = await prisma.class.findFirst({
     where: {
       id
@@ -32,6 +33,10 @@ const deleteById = async (id) => {
 
   if(!classroom) {
     throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== userId) {
+    throw new AppError("Você não é o professor da turma!", 404);
   }
 
   await prisma.class.update({
@@ -44,7 +49,7 @@ const deleteById = async (id) => {
   });
 };
 
-const getById = async (id) => {
+const getById = async (id, userId) => {
   const classroom = await prisma.class.findFirst({
     where: {
       id: id
@@ -56,6 +61,10 @@ const getById = async (id) => {
 
   if (!classroom) {
     throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== userId) {
+    throw new AppError("Você não é o professor da turma!", 404);
   }
 
   const students = await prisma.user.findMany({
@@ -98,10 +107,10 @@ const validateName = async(id, name) => {
   }
 };
 
-const create = async ({ name, teacher_id, access_key }) => {
+const create = async ({ name, userId: teacherId, access_key }) => {
   const teacher = await prisma.user.findFirst({
     where: {
-      id: teacher_id,
+      id: teacherId,
       role: roles.TEACHER
     }
   });
@@ -114,7 +123,7 @@ const create = async ({ name, teacher_id, access_key }) => {
   const newClass = await prisma.class.create({
     data: {
       name,
-      teacherId: teacher_id,
+      teacherId: teacherId,
       accessKey: access_key
     }
   });
@@ -122,7 +131,7 @@ const create = async ({ name, teacher_id, access_key }) => {
   return newClass;
 };
 
-const update = async ({ id, name }) => {
+const update = async ({ id, name, userId }) => {
   await validateName(id, name);
   const classroom = await prisma.class.findUnique({
     where: {
@@ -132,6 +141,10 @@ const update = async ({ id, name }) => {
 
   if(!classroom) {
     throw new AppError("Turma não encontrada!");
+  }
+
+  if(classroom.teacherId !== userId) {
+    throw new AppError("Você não é o professor da turma!", 404);
   }
 
   await prisma.class.update({

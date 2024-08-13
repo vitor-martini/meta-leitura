@@ -10,7 +10,7 @@ export async function PUT(req) {
     verifyTeacherRole(tokenInfo);
     const classId = getIdFromUrl(req);
 
-    return await classController.update(req, classId);
+    return await classController.update(req, classId, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }
@@ -22,7 +22,7 @@ export async function GET(req) {
     verifyTeacherRole(tokenInfo);
     const classId = getIdFromUrl(req);
 
-    return await classController.show(classId);
+    return await classController.show(classId, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }
@@ -34,7 +34,7 @@ export async function DELETE(req) {
     verifyTeacherRole(tokenInfo);
     const classId = getIdFromUrl(req);
 
-    return await classController.destroy(classId);
+    return await classController.destroy(classId, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }
