@@ -1,3 +1,4 @@
+import generateRandomCode from "@/lib/generateRandomCode";
 import roles from "@/lib/roles";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
@@ -89,6 +90,7 @@ const validateName = async(id, name) => {
     classroom = await prisma.class.findFirst({
       where: {
         name: name,
+        active: true,
         id: {
           not: id
         }
@@ -97,7 +99,8 @@ const validateName = async(id, name) => {
   } else {
     classroom = await prisma.class.findFirst({
       where: {
-        name
+        name,
+        active: true,
       }
     });
   }
@@ -107,7 +110,7 @@ const validateName = async(id, name) => {
   }
 };
 
-const create = async ({ name, userId: teacherId, access_key }) => {
+const create = async ({ name, userId: teacherId }) => {
   const teacher = await prisma.user.findFirst({
     where: {
       id: teacherId,
@@ -120,11 +123,13 @@ const create = async ({ name, userId: teacherId, access_key }) => {
   }
 
   await validateName(null, name);
+
+  const accessKey = generateRandomCode(8);
   const newClass = await prisma.class.create({
     data: {
       name,
-      teacherId: teacherId,
-      accessKey: access_key
+      teacherId,
+      accessKey
     }
   });
 

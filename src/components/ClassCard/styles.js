@@ -20,7 +20,7 @@ export const CardContainer = styled.div`
 
 export const HeaderContainer = styled.div`
   width: 100%;
-  background-color: ${({ theme, $newText }) => $newText ? theme.COLORS.PURPLE : theme.COLORS.DARK_BLUE };
+  background-color: ${({ theme, $new }) => $new ? theme.COLORS.PURPLE : theme.COLORS.DARK_BLUE };
   display: flex;
   justify-content: center;
 `;
@@ -52,12 +52,12 @@ export const Header = styled.div`
 
 export const CoverContainer = styled.div`
   cursor: pointer;
-  width: ${({ $newText }) => $newText ? "10rem" : "18rem" }; 
-  height: ${({ $newText }) => $newText ? "10rem" : "20rem" }; 
+  width: ${({ $new }) => $new ? "8rem" : "18rem" }; 
+  height: ${({ $new }) => $new ? "8rem" : "20rem" }; 
   position: relative;
 
   > img {
     border-radius: 20px;
-    margin-top: ${({ $newText }) => $newText ? "2.6rem" : "0" }; 
+    margin-top: ${({ $new }) => $new ? "3.2rem" : "0" }; 
   }
 `;

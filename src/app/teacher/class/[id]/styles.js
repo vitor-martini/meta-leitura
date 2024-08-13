@@ -20,6 +20,10 @@ export const ContentContainer = styled.div`
   padding: 2rem;
   gap: 1.6rem;
   position: relative;
+
+  > h1 {
+    margin-bottom: 2rem;
+  }
 `;
 
 
@@ -40,46 +44,11 @@ export const BackButtonContainer = styled.div`
   }
 `;
 
-export const CoverContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 250px;
-  height: 250px;
-  position: relative;
-  border-radius: 20px;
-  border: 4px solid ${({ theme }) => theme.COLORS.PURPLE};
-
-  > img {
-    border-radius: 16px;
-  }
-`;
-
-export const CameraContainer = styled.label`
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 1.2rem;
-  background-color: ${({ theme }) => theme.COLORS.PURPLE };
-  position: absolute;
-  bottom: -16px;
-  right: -16px;
-
-  input {
-    display: none;
-  }
-
-  svg {
-    cursor: pointer;
-    color: ${({ theme }) => theme.COLORS.WHITE };
-  }
-`;
-
 export const FieldsContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 2rem;
   width: 100%;
 
   > button {
@@ -91,6 +60,35 @@ export const FieldsContainer = styled.div`
   }
 `;
 
+export const AccessKeyContainer = styled.div`
+  > label {
+    padding: 1.6rem;
+  }
+`;
+
+export const AccessKeyWrapper = styled.div`
+  border: 2px solid ${({ theme }) => theme.COLORS.PURPLE};
+  overflow: hidden;
+  background-color: ${({ theme }) => theme.COLORS.LIGHT_GREY};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  gap: 0.8rem;
+  width: 100%;
+  margin-top: 0.8rem;
+
+  > svg {
+    color: ${({ theme }) => theme.COLORS.LIGHT};
+    background-color: ${({ theme }) => theme.COLORS.PURPLE};
+    padding: 0 1.2rem;
+    cursor: pointer;
+  }
+
+  > p {
+    padding: 0 1.2rem;
+  }
+`;
 
 export const ButtonsContainer = styled.div`
   margin: 2rem auto;

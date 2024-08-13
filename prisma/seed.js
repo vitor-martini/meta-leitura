@@ -1,14 +1,7 @@
+const generateRandomCode = require("../src/lib/generateRandomCode");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
 const prisma = new PrismaClient();
-
-function generateRandomCode(length) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  return Array.from(crypto.randomBytes(length))
-      .map(byte => characters[byte % characters.length])
-      .join("");
-}
 
 async function createUsers() {
   const saltRounds = 10;

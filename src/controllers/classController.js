@@ -18,13 +18,13 @@ const destroy = async (classId, userId) => {
 };
 
 const create = async (req, userId) => {
-  const { name, access_key } = await req.json();
-  if(!name || !access_key) {
+  const { name } = await req.json();
+  if(!name) {
     throw new AppError("Dados obrigatórios não informados!", 400);
   }
 
-  const id = await classService.create({ name, userId, access_key });
-  return createResponse({ body: { id }, status: 201 });
+  const classroom = await classService.create({ name, userId });
+  return createResponse({ body: { classroom }, status: 201 });
 };
 
 const update = async (req, classId, userId) => {
