@@ -55,32 +55,76 @@ const getById = async (id, userId) => {
     where: {
       id: id
     },
-    include: {
-      teacher: true,
-    }
-  });
-
-  if (!classroom) {
-    throw new AppError("Turma não encontrada!", 404);
-  }
-
-  if(classroom.teacherId !== userId) {
-    throw new AppError("Você não é o professor da turma!", 404);
-  }
-
-  const students = await prisma.user.findMany({
-    where: {
+    select: {
+      id: true,
+      accessKey: true,
+      name: true,
+      createdAt: true,
+      updatedAt: true,
+      active: true,
+      teacher: {
+        select: {
+          id: true,
+          name: true,
+          email: true
+        }
+      },
       classUser: {
-        some: {
-          classId: id
+        select: {
+          student: {
+            select: {
+              id: true,
+              name: true,
+              avatarUrl: true,
+              grade: true,
+              performances: {
+                select: {
+                  id: true,
+                  value: true,
+                  text: {
+                    select: {
+                      id: true,
+                      name: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      classText: {
+        select: {
+          text: {
+            select: {
+              id: true,
+              name: true,
+              difficulty: true,
+              coverUrl: true
+            }
+          }
         }
       }
     }
   });
 
+  if (!classroom) {
+    throw new AppError("Class not found!", 404);
+  }
+
+  if (classroom.teacher.id !== userId) {
+    throw new AppError("You are not the teacher of this class!", 404);
+  }
+
+  const students = classroom.classUser.map(x => x.student);
+  const texts = classroom.classText.map(x => x.text);
+  delete classroom.classUser; 
+  delete classroom.classText; 
+
   return {
     ...classroom,
-    students: students
+    texts,
+    students
   };
 };
 
