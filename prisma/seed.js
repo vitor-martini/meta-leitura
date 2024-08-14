@@ -157,6 +157,9 @@ async function createPerformance() {
   const texts = await prisma.text.findMany();
 
   for (const student of students) {
+    let totalStudentValue = 0;
+    let performanceCount = 0;
+
     for (const text of texts) {
       const questions = await prisma.question.findMany({
         where: {
@@ -195,9 +198,23 @@ async function createPerformance() {
           value: totalValue,
         },
       });
+
+      totalStudentValue += totalValue;
+      performanceCount++;
     }
+
+    const averageGrade = totalStudentValue / performanceCount;
+    await prisma.user.update({
+      where: {
+        id: student.id,
+      },
+      data: {
+        grade: averageGrade, 
+      },
+    });
   }
 }
+
 
 async function main() {
   await createUsers();
