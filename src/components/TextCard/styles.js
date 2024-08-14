@@ -10,8 +10,8 @@ export const CardContainer = styled.div`
   border-radius: 20px;
   overflow: hidden; 
   background-color: ${({ theme }) => theme.COLORS.WHITE };
-  width: 320px;
-  height: 320px;
+  width: 260px;
+  height: 280px;
 
   > p {
     margin: 0.8rem 0;
@@ -51,14 +51,14 @@ export const Header = styled.div`
 `;
 
 export const CoverContainer = styled.div`
-  cursor: pointer;
-  width: ${({ $newText }) => $newText ? "10rem" : "18rem" }; 
-  height: ${({ $newText }) => $newText ? "10rem" : "20rem" }; 
+  width: ${({ $newText }) => $newText ? "8rem" : "18rem" }; 
+  height: ${({ $newText }) => $newText ? "8rem" : "20rem" }; 
   position: relative;
   margin: 0.8rem 0;
 
   > img {
+    cursor: ${({ $newText }) => $newText ? "pointer" : "default" };
     border-radius: 20px;
-    margin-top: ${({ $newText }) => $newText ? "6rem" : "0" }; 
+    margin-top: ${({ $newText }) => $newText ? "4.2rem" : "0" }; 
   }
 `;

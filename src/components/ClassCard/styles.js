@@ -51,12 +51,12 @@ export const Header = styled.div`
 `;
 
 export const CoverContainer = styled.div`
-  cursor: pointer;
   width: ${({ $new }) => $new ? "8rem" : "18rem" }; 
   height: ${({ $new }) => $new ? "8rem" : "20rem" }; 
   position: relative;
 
   > img {
+    cursor: ${({ $new }) => $new ? "pointer" : "default" };
     border-radius: 20px;
     margin-top: ${({ $new }) => $new ? "3.2rem" : "0" }; 
   }

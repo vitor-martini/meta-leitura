@@ -28,6 +28,7 @@ const EditClass = () => {
   const router = useRouter();
   const [isNew, setIsNew] = useState(false);
   const [name, setName] = useState(""); 
+  const [classroom, setClassroom] = useState({}); 
   const [newId, setNewId] = useState(undefined); 
   const [accessKey, setAccessKey] = useState(""); 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,31 +39,6 @@ const EditClass = () => {
       autoClose: 1000
     });
   }
-
-  useEffect(() => {
-    Modal.setAppElement("#__next");
-    
-    async function fetchClass() {
-      if(id === "new") {
-        setIsNew(true);
-        return;
-      }
-
-      try {
-        const result = await api.get(`/classes/${id}`);
-        const classroom = result?.data?.classroom;
-
-        setName(classroom.name); 
-        setAccessKey(classroom.accessKey); 
-        setIsNew(false);
-        setNewId(id);
-      } catch {
-        router.push("/teacher/class");
-      }
-    }
-
-    fetchClass();
-  }, [id]);
 
   async function confirmDelete() {
     try {
@@ -98,6 +74,7 @@ const EditClass = () => {
         });
   
         const { classroom } = response.data;
+        setClassroom(classroom);
         setAccessKey(classroom.accessKey);
         setNewId(classroom.id);
         setIsNew(false);
@@ -120,6 +97,33 @@ const EditClass = () => {
       }
     } 
   }
+
+  useEffect(() => {
+    Modal.setAppElement("#__next");
+    
+    async function fetchClass() {
+      if(id === "new") {
+        setIsNew(true);
+        return;
+      }
+
+      try {
+        const result = await api.get(`/classes/${id}`);
+        const classroom = result?.data?.classroom;
+
+        console.log(classroom);
+        setClassroom(classroom); 
+        setName(classroom.name); 
+        setAccessKey(classroom.accessKey); 
+        setIsNew(false);
+        setNewId(id);
+      } catch {
+        router.push("/teacher/class");
+      }
+    }
+
+    fetchClass();
+  }, [id]);
 
   return (
     <Container>
@@ -148,6 +152,25 @@ const EditClass = () => {
           }
         </FieldsContainer>
       </ContentContainer>
+
+      <ContentContainer>
+        <h2>Leituras</h2>
+        {
+          classroom?.texts && classroom?.texts.length > 0 && classroom.texts.map(s => (
+            <p key={s.id}>{s.name}</p>
+          ))
+        }
+      </ContentContainer>
+
+      <ContentContainer>
+        <h2>Alunos</h2>
+        {
+          classroom?.students && classroom?.students.length > 0 && classroom.students.map(s => (
+            <p key={s.id}>{s.name}</p>
+          ))
+        }
+      </ContentContainer>
+
       <ButtonsContainer>
         <Button
           title={"Salvar"}
