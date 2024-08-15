@@ -78,12 +78,12 @@ const EditClass = () => {
         });
   
         const { classroom } = response.data;
-        setClassroom(classroom);
-        setAccessKey(classroom.accessKey);
-        setNewId(classroom.id);
-        setIsNew(false);
-        toast.success("Turma criada com sucesso!");
-        return;
+        toast.success("Turma criada com sucesso!", {
+          onClose: () => {
+            router.push(`/teacher/class/${classroom.id}`);
+          },
+          autoClose: 1000, 
+        });
       } else {
         await api.put(`/classes/${newId}`, {
           name
@@ -133,7 +133,7 @@ const EditClass = () => {
       <Header />
       <ContentContainer>
         <h1>Dados da Turma</h1>
-        <BackButtonContainer onClick={() => router.back()}>
+        <BackButtonContainer onClick={() => router.push("/teacher/class")}>
           <IoMdArrowRoundBack size={60}/>
         </BackButtonContainer>
         <FieldsContainer>
@@ -155,26 +155,36 @@ const EditClass = () => {
           }
         </FieldsContainer>
       </ContentContainer>
-        <ContentContainer>
+      {
+        !isNew && (
+          <ContentContainer>
           <h2>Leituras</h2>
           <SearchText
             setClassroom={setClassroom}
             classroom={classroom}
           />
-          <ItensContainer>
           {
-            classroom?.texts && classroom?.texts.length > 0 && classroom.texts.map((t, i) => (
-              <Text 
-                key={i}
-                index={i}
-                text={t}
-                setClassroom={setClassroom}
-                classroom={classroom}
-              />
-            ))
+            classroom?.texts && 
+            classroom?.texts.length > 0 && 
+            (
+              <ItensContainer>
+              {
+                classroom.texts.map((t, i) => (
+                  <Text 
+                    key={i}
+                    index={i}
+                    text={t}
+                    setClassroom={setClassroom}
+                    classroom={classroom}
+                  />
+                ))
+              }
+            </ItensContainer>
+            )
           }
-          </ItensContainer>
         </ContentContainer>
+        )
+      }
       {
         classroom?.students && classroom?.students.length > 0 && (
           <ContentContainer>
