@@ -69,7 +69,7 @@ export const AccessKeyContainer = styled.div`
   }
 `;
 
-export const StudentsContainer = styled.div`
+export const ItensContainer = styled.div`
   border-radius: 20px;
   overflow: hidden;
   width: 100%;

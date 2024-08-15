@@ -11,12 +11,13 @@ import {
   ModalButtonsContent,
   AccessKeyContainer,
   AccessKeyWrapper,
-  StudentsContainer
+  ItensContainer
 } from "./styles";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import { Student } from "@/components/Student";
+import { Text } from "@/components/Text";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaRegCopy } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -153,20 +154,32 @@ const EditClass = () => {
           }
         </FieldsContainer>
       </ContentContainer>
+      {
+        classroom?.texts && classroom?.texts.length > 0 && (
+          <ContentContainer>
+            <h2>Leituras</h2>
+            <ItensContainer>
+            {
+              classroom.texts.map((t, i) => (
+                <Text 
+                  key={i}
+                  index={i}
+                  text={t}
+                  setClassroom={setClassroom}
+                  classroom={classroom}
+                />
+              ))
+            }
+            </ItensContainer>
+          </ContentContainer>
+        )
+      }
 
-      <ContentContainer>
-        <h2>Leituras</h2>
-        {
-          classroom?.texts && classroom?.texts.length > 0 && classroom.texts.map(s => (
-            <p key={s.id}>{s.name}</p>
-          ))
-        }
-      </ContentContainer>
       {
         classroom?.students && classroom?.students.length > 0 && (
           <ContentContainer>
             <h2>Alunos</h2>
-            <StudentsContainer>
+            <ItensContainer>
             {
               classroom.students.map((s, i) => (
                 <Student 
@@ -178,7 +191,7 @@ const EditClass = () => {
                 />
               ))
             }
-            </StudentsContainer>
+            </ItensContainer>
           </ContentContainer>
         )
       }
