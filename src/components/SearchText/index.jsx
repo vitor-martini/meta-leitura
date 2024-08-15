@@ -68,6 +68,7 @@ export function SearchText({ setClassroom, classroom }) {
         bgColor={theme.COLORS.WHITE}
         margin={"0 1.6rem"}
         onChange={(e => setSearch(e.target.value))}
+        value={search}
       />
       {
         search && texts && (
