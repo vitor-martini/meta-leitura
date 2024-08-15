@@ -10,11 +10,13 @@ import {
   ModalContent, 
   ModalButtonsContent,
   AccessKeyContainer,
-  AccessKeyWrapper
+  AccessKeyWrapper,
+  StudentsContainer
 } from "./styles";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
+import { Student } from "@/components/Student";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaRegCopy } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -111,7 +113,6 @@ const EditClass = () => {
         const result = await api.get(`/classes/${id}`);
         const classroom = result?.data?.classroom;
 
-        console.log(classroom);
         setClassroom(classroom); 
         setName(classroom.name); 
         setAccessKey(classroom.accessKey); 
@@ -161,16 +162,26 @@ const EditClass = () => {
           ))
         }
       </ContentContainer>
-
-      <ContentContainer>
-        <h2>Alunos</h2>
-        {
-          classroom?.students && classroom?.students.length > 0 && classroom.students.map(s => (
-            <p key={s.id}>{s.name}</p>
-          ))
-        }
-      </ContentContainer>
-
+      {
+        classroom?.students && classroom?.students.length > 0 && (
+          <ContentContainer>
+            <h2>Alunos</h2>
+            <StudentsContainer>
+            {
+              classroom.students.map((s, i) => (
+                <Student 
+                  key={i}
+                  index={i}
+                  student={s}
+                  setClassroom={setClassroom}
+                  classroom={classroom}
+                />
+              ))
+            }
+            </StudentsContainer>
+          </ContentContainer>
+        )
+      }
       <ButtonsContainer>
         <Button
           title={"Salvar"}
