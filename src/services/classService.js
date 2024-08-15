@@ -50,6 +50,42 @@ const deleteById = async (id, userId) => {
   });
 };
 
+const removeStudent = async (classId, studentId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const student = await prisma.user.findFirst({
+    where: {
+      id: studentId,
+      role: roles.STUDENT
+    }
+  });
+
+  if(!student) {
+    throw new AppError("Aluno não encontrado!", 404);
+  }
+
+  await prisma.classUser.delete({
+    where: {
+      classId_studentId: {
+        classId,
+        studentId
+      }
+    }
+  });
+};
+
 const getById = async (id, userId) => {
   const classroom = await prisma.class.findFirst({
     where: {
@@ -212,5 +248,6 @@ module.exports = {
   update,
   getById,
   getByName,
-  deleteById
+  deleteById,
+  removeStudent
 };
