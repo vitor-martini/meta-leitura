@@ -38,6 +38,8 @@ export const Header = styled.div`
     font-size: 2.4rem;
     flex: 1; 
     text-align: center;
+    word-wrap: break-word; 
+    word-break: break-word;
   }
 
   > svg {
