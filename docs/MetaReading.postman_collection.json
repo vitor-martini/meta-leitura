@@ -319,6 +319,60 @@
 					"response": []
 				},
 				{
+					"name": "RemoveStudent",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/classes/1/student/2"
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveText",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/classes/1/text/1"
+					},
+					"response": []
+				},
+				{
+					"name": "AddText",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/classes/1/text/2"
+					},
+					"response": []
+				},
+				{
 					"name": "Show",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
