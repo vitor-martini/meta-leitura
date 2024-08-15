@@ -16,6 +16,7 @@ import {
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
+import { SearchText } from "@/components/SearchText";
 import { Student } from "@/components/Student";
 import { Text } from "@/components/Text";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -154,27 +155,26 @@ const EditClass = () => {
           }
         </FieldsContainer>
       </ContentContainer>
-      {
-        classroom?.texts && classroom?.texts.length > 0 && (
-          <ContentContainer>
-            <h2>Leituras</h2>
-            <ItensContainer>
-            {
-              classroom.texts.map((t, i) => (
-                <Text 
-                  key={i}
-                  index={i}
-                  text={t}
-                  setClassroom={setClassroom}
-                  classroom={classroom}
-                />
-              ))
-            }
-            </ItensContainer>
-          </ContentContainer>
-        )
-      }
-
+        <ContentContainer>
+          <h2>Leituras</h2>
+          <SearchText
+            setClassroom={setClassroom}
+            classroom={classroom}
+          />
+          <ItensContainer>
+          {
+            classroom?.texts && classroom?.texts.length > 0 && classroom.texts.map((t, i) => (
+              <Text 
+                key={i}
+                index={i}
+                text={t}
+                setClassroom={setClassroom}
+                classroom={classroom}
+              />
+            ))
+          }
+          </ItensContainer>
+        </ContentContainer>
       {
         classroom?.students && classroom?.students.length > 0 && (
           <ContentContainer>
