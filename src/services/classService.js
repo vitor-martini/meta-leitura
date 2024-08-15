@@ -76,11 +76,79 @@ const removeStudent = async (classId, studentId, teacherId) => {
     throw new AppError("Aluno não encontrado!", 404);
   }
 
+  const classUser = await prisma.classUser.findFirst({
+    where: {
+      classId,
+      studentId
+    }
+  });
+
+  if(!classUser) {
+    throw new AppError("Aluno não faz parte da turma!", 404);
+  }
+  
   await prisma.classUser.delete({
     where: {
       classId_studentId: {
         classId,
         studentId
+      }
+    }
+  });
+};
+
+const removeText = async (classId, textId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const text = await prisma.text.findFirst({
+    where: {
+      id: textId
+    }
+  });
+
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  const classText = await prisma.classText.findFirst({
+    where: {
+      classId,
+      textId
+    }
+  });
+
+  if(!classText) {
+    throw new AppError("Texto não faz parte da turma!", 404);
+  }
+
+  const performances = await prisma.performance.findFirst({
+    where: {
+      textId,
+      classId
+    }
+  });
+
+  if(performances) {
+    throw new AppError("Não é possível excluir pois já houveram respostas!", 404);
+  }
+
+  await prisma.classText.delete({
+    where: {
+      classId_textId: {
+        classId,
+        textId
       }
     }
   });
@@ -114,13 +182,20 @@ const getById = async (id, userId) => {
               avatarUrl: true,
               grade: true,
               performances: {
+                where: {
+                  classId: id 
+                },
                 select: {
                   id: true,
                   grade: true,
-                  text: {
+                  classText: {
                     select: {
-                      id: true,
-                      name: true
+                      text: {
+                        select: {
+                          id: true,
+                          name: true
+                        }
+                      }
                     }
                   }
                 }
@@ -152,7 +227,18 @@ const getById = async (id, userId) => {
     throw new AppError("You are not the teacher of this class!", 404);
   }
 
-  const students = classroom.classUser.map(x => x.student);
+  const students = classroom.classUser.map(x => {
+    const performances = x.student.performances.map(performance => ({
+      id: performance.id,
+      grade: performance.grade,
+      text: performance.classText.text // Seleciona apenas o texto dentro de classText
+    }));
+    return {
+      ...x.student,
+      performances
+    };
+  });
+
   const texts = classroom.classText.map(x => x.text);
   students.sort((a, b) => a.name.localeCompare(b.name));
   delete classroom.classUser; 
@@ -164,6 +250,8 @@ const getById = async (id, userId) => {
     students
   };
 };
+
+
 
 const validateName = async(id, name) => {
   let classroom;
@@ -249,5 +337,6 @@ module.exports = {
   getById,
   getByName,
   deleteById,
-  removeStudent
+  removeStudent,
+  removeText
 };
