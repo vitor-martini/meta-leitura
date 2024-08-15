@@ -80,7 +80,7 @@ const getById = async (id, userId) => {
               performances: {
                 select: {
                   id: true,
-                  value: true,
+                  grade: true,
                   text: {
                     select: {
                       id: true,
@@ -118,6 +118,7 @@ const getById = async (id, userId) => {
 
   const students = classroom.classUser.map(x => x.student);
   const texts = classroom.classText.map(x => x.text);
+  students.sort((a, b) => a.name.localeCompare(b.name));
   delete classroom.classUser; 
   delete classroom.classText; 
 

@@ -95,7 +95,7 @@ model Performance {
   studentId Int      @map("student_id")
   text      Text     @relation(fields: [textId], references: [id])
   textId    Int      @map("text_id")
-  value     Float
+  grade     Float
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

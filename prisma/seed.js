@@ -195,7 +195,7 @@ async function createPerformance() {
         data: {
           studentId: student.id,
           textId: text.id,
-          value: totalValue,
+          grade: totalValue,
         },
       });
 
