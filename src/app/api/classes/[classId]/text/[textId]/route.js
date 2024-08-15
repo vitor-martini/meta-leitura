@@ -15,3 +15,16 @@ export async function DELETE(req, { params }) {
     return handleError(error);
   }
 }
+
+export async function POST(req, { params }) {
+  try {
+    const tokenInfo = verifyToken(req);
+    verifyTeacherRole(tokenInfo);
+    const classId = Number(params.classId);
+    const textId = Number(params.textId);
+
+    return await classController.addText(classId, textId, tokenInfo.userId);
+  } catch(error) {
+    return handleError(error);
+  }
+}

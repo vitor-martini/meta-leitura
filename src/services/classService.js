@@ -154,6 +154,50 @@ const removeText = async (classId, textId, teacherId) => {
   });
 };
 
+const addText = async (classId, textId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const text = await prisma.text.findFirst({
+    where: {
+      id: textId
+    }
+  });
+
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  const classText = await prisma.classText.findFirst({
+    where: {
+      classId,
+      textId
+    }
+  });
+
+  if(classText) {
+    throw new AppError("Texto já faz parte da turma!", 404);
+  }
+
+  await prisma.classText.create({
+    data: {
+      classId,
+      textId
+    }
+  });
+};
+
 const getById = async (id, userId) => {
   const classroom = await prisma.class.findFirst({
     where: {
@@ -220,27 +264,27 @@ const getById = async (id, userId) => {
   });
 
   if (!classroom) {
-    throw new AppError("Class not found!", 404);
+    throw new AppError("Turma não encontrada!", 404);
   }
 
   if (classroom.teacher.id !== userId) {
-    throw new AppError("You are not the teacher of this class!", 404);
+    throw new AppError("Você não é o professor dessa turma!", 404);
   }
 
   const students = classroom.classUser.map(x => {
     const performances = x.student.performances.map(performance => ({
       id: performance.id,
       grade: performance.grade,
-      text: performance.classText.text // Seleciona apenas o texto dentro de classText
+      text: performance.classText.text 
     }));
     return {
       ...x.student,
       performances
     };
   });
-
-  const texts = classroom.classText.map(x => x.text);
   students.sort((a, b) => a.name.localeCompare(b.name));
+  const texts = classroom.classText.map(x => x.text);
+  texts.sort((a, b) => a.name.localeCompare(b.name));
   delete classroom.classUser; 
   delete classroom.classText; 
 
@@ -250,8 +294,6 @@ const getById = async (id, userId) => {
     students
   };
 };
-
-
 
 const validateName = async(id, name) => {
   let classroom;
@@ -338,5 +380,6 @@ module.exports = {
   getByName,
   deleteById,
   removeStudent,
-  removeText
+  removeText,
+  addText
 };

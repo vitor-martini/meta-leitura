@@ -27,6 +27,11 @@ const removeText = async (classId, textId, teacherId) => {
   return createResponse({ body: { message: "Removido com sucesso!"}, status: 200 });
 };
 
+const addText = async (classId, textId, teacherId) => {
+  await classService.addText(classId, textId, teacherId);
+  return createResponse({ body: { message: "Adicionado com sucesso!"}, status: 201 });
+};
+
 const create = async (req, userId) => {
   const { name } = await req.json();
   if(!name) {
@@ -54,5 +59,6 @@ module.exports = {
   show,
   destroy,
   removeStudent,
-  removeText
+  removeText,
+  addText
 };
