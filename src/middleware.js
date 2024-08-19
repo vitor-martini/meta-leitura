@@ -85,6 +85,9 @@ export const config = {
     "/teacher/class",
     "/teacher/class/new",
     "/student/text",
+    "/student/text/id",
+    "/student/class",
+    "/student/class/id",
     "/user"
   ],
 };
