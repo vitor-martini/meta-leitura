@@ -4,25 +4,65 @@ const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const XLSX = require("xlsx");
 
-const getByName = async (name, userId) => {
-  if(!name) {
-    name = "";  
-  }
-
-  const classes = await prisma.class.findMany({
+const join = async({ accessKey, userId }) => {
+  const classroom = await prisma.class.findFirst({
     where: {
-      name: {
-        contains: name,
-        mode: "insensitive"
-      }, 
-      active: true,
-      teacherId: userId
-    },
-    orderBy: {
-      name: "asc"
+      accessKey
     }
   });
 
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  const checkUserInClass = await prisma.class.findFirst({
+    where: {
+      id: classroom.id,
+      classUser: {
+        some: {
+          studentId: userId
+        }
+      }
+    }
+  });
+
+  if(checkUserInClass) {
+    throw new AppError("Você já pertence a essa turma!", 400);
+  }
+
+  await prisma.classUser.create({
+    data: {
+      classId: classroom.id,
+      studentId: userId
+    }
+  });
+};
+
+const getByName = async (name = "", userId, role) => {
+  const baseQuery = {
+    where: {
+      name: {
+        contains: name,
+        mode: "insensitive",
+      },
+      active: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  };
+
+  if (role === roles.TEACHER) {
+    baseQuery.where.teacherId = userId;
+  } else {
+    baseQuery.where.classUser = {
+      some: {
+        studentId: userId,
+      },
+    };
+  }
+
+  const classes = await prisma.class.findMany(baseQuery);
   return classes;
 };
 
@@ -434,5 +474,6 @@ module.exports = {
   removeStudent,
   removeText,
   addText,
-  createExcel
+  createExcel,
+  join
 };
