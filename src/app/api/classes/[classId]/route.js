@@ -19,10 +19,9 @@ export async function PUT(req, { params }) {
 export async function GET(req, { params }) {
   try {
     const tokenInfo =  verifyToken(req);
-    verifyRole(tokenInfo, roles.TEACHER);
     const classId = Number(params.classId);
 
-    return await classController.show(classId, tokenInfo.userId);
+    return await classController.show(classId, tokenInfo.userId, tokenInfo.role);
   } catch(error) {
     return handleError(error);
   }

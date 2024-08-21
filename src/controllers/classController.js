@@ -7,8 +7,8 @@ const index = async (req, name, userId, userRole) => {
   return createResponse({ body: { classroom: classroom }, status: 200 });
 };
 
-const show = async (classId, userId) => {
-  const classroom = await classService.getById(classId, userId);
+const show = async (classId, userId, userRole) => {
+  const classroom = await classService.getById(classId, userId, userRole);
   return createResponse({ body: { classroom }, status: 200 });
 };
 

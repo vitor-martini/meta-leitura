@@ -290,26 +290,27 @@ const addText = async (classId, textId, teacherId) => {
   });
 };
 
-const getById = async (id, userId) => {
+const getById = async (id, userId, role) => {
+  const isTeacher = role === roles.TEACHER;
+
   const classroom = await prisma.class.findFirst({
-    where: {
-      id: id
-    },
+    where: { id },
     select: {
       id: true,
-      accessKey: true,
+      accessKey: isTeacher,
       name: true,
-      createdAt: true,
-      updatedAt: true,
+      createdAt: isTeacher,
+      updatedAt: isTeacher,
       active: true,
       teacher: {
         select: {
           id: true,
           name: true,
-          email: true
-        }
+          email: true,
+        },
       },
       classUser: {
+        where: isTeacher ? {} : { studentId: userId },
         select: {
           student: {
             select: {
@@ -318,9 +319,7 @@ const getById = async (id, userId) => {
               avatarUrl: true,
               grade: true,
               performances: {
-                where: {
-                  classId: id 
-                },
+                where: { classId: id },
                 select: {
                   id: true,
                   grade: true,
@@ -329,16 +328,16 @@ const getById = async (id, userId) => {
                       text: {
                         select: {
                           id: true,
-                          name: true
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       classText: {
         select: {
@@ -347,45 +346,48 @@ const getById = async (id, userId) => {
               id: true,
               name: true,
               difficulty: true,
-              coverUrl: true
-            }
-          }
-        }
-      }
-    }
+              coverUrl: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!classroom) {
     throw new AppError("Turma não encontrada!", 404);
   }
 
-  if (classroom.teacher.id !== userId) {
-    throw new AppError("Você não é o professor dessa turma!", 404);
+  if (isTeacher && classroom.teacher.id !== userId) {
+    throw new AppError("Você não é o professor dessa turma!", 403);
   }
 
-  const students = classroom.classUser.map(x => {
-    const performances = x.student.performances.map(performance => ({
+  if (!isTeacher && (!classroom.classUser || classroom.classUser.length === 0)) {
+    throw new AppError("Você não pertence a essa turma!", 403);
+  }
+
+  const students = classroom.classUser.map((x) => ({
+    ...x.student,
+    performances: x.student.performances.map((performance) => ({
       id: performance.id,
       grade: performance.grade,
-      text: performance.classText.text 
-    }));
-    return {
-      ...x.student,
-      performances
-    };
-  });
-  students.sort((a, b) => a.name.localeCompare(b.name));
-  const texts = classroom.classText.map(x => x.text);
-  texts.sort((a, b) => a.name.localeCompare(b.name));
-  delete classroom.classUser; 
-  delete classroom.classText; 
+      text: performance.classText.text,
+    })),
+  })).sort((a, b) => a.name.localeCompare(b.name));
+
+  const texts = classroom.classText.map((x) => x.text)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  delete classroom.classUser;
+  delete classroom.classText;
 
   return {
     ...classroom,
     texts,
-    students
+    students,
   };
 };
+
 
 const validateName = async(id, name) => {
   let classroom;
