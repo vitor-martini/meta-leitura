@@ -54,11 +54,6 @@ const EditText = () => {
     Modal.setAppElement("#__next");
     
     async function fetchText() {
-      if(id === "new") {
-        setIsNew(true);
-        return;
-      }
-
       try {
         const result = await api.get(`/texts/${id}`);
         const text = result?.data?.text.text;
@@ -79,42 +74,6 @@ const EditText = () => {
     fetchText();
   }, [id]);
 
-  function handleAvatarChange(event) {
-    const file = event.target.files[0];
-    setNewCover(file);
-
-    const newCover = URL.createObjectURL(file);
-    setCoverUrl(newCover);
-  }
-
-  async function confirmDelete() {
-    try {
-      await api.delete(`/texts/${id}`);
-      sessionStorage.setItem("messageStorage", "Excluído com sucesso!");
-      router.push("/teacher/text");
-    } catch (error) {
-      console.log(error);
-      const errorMessage = error.response?.data?.message;
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        toast.error("Não foi possível excluir");
-      }
-    }
-    setIsModalOpen(false);
-  }
-
-  async function handleDelete() {
-    setIsModalOpen(true);
-  }
-
-  async function uploadCover(id) {
-    const fileUploadForm = new FormData();
-    fileUploadForm.append("cover", newCover);
-    const response = await api.patch(`/texts/cover/${id}`, fileUploadForm);
-    return response.data.cover;
-  }
-
   async function handleSave() {
     if (!title || !difficulty || !content) {
       toast.error("Preencha todos os campos!");
@@ -129,30 +88,15 @@ const EditText = () => {
     setLoading(true);
     try {
       let textId = id;
-      if(isNew) {
-        const response = await api.post("/texts", {
-          name: title,
-          difficulty,
-          content,
-          questions
-        });
-  
-        textId = response.data.id;
-      } else {
-        await api.put(`/texts/${textId}`, {
-          name: title,
-          difficulty,
-          content,
-          questions
-        });
-      }
+      await api.put(`/texts/${textId}`, {
+        name: title,
+        difficulty,
+        content,
+        questions
+      });
 
-      if (newCover) {
-        await uploadCover(textId);
-      }
-
-      sessionStorage.setItem("messageStorage", `${isNew ? "Cadastrado" : "Atualizado"} com sucesso!`);
-      router.push("/teacher/text");
+      sessionStorage.setItem("messageStorage", "Atualizado com sucesso!");
+      router.push("/student/text");
     } catch (error) {
       console.log(error);
       const errorMessage = error.response?.data?.message;
@@ -185,10 +129,6 @@ const EditText = () => {
               priority
             />
           )}
-          <CameraContainer htmlFor="avatar">
-            <input type="file" id="avatar" onChange={handleAvatarChange} />
-            <FaCamera size={30} />
-          </CameraContainer>
         </CoverContainer>
         <FieldsContainer>
           <Input
@@ -225,45 +165,7 @@ const EditText = () => {
           maxWidth={"800px"}
           onClick={handleSave}
         />
-        {
-          !isNew && (
-            <Button
-              title={"Excluir"}
-              width={"100%"}
-              maxWidth={"800px"}
-              onClick={handleDelete}
-              bgColor={theme.COLORS.DARK_RED}
-            />
-          )
-        }
       </ButtonsContainer>
-      {isModalOpen && (
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={() => setIsModalOpen(false)}
-          contentLabel="Confirm Deletion"
-          style={{
-            content: {
-              top: "50%",
-              left: "50%",
-              right: "auto",
-              bottom: "auto",
-              marginRight: "-50%",
-              transform: "translate(-50%, -50%)",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.5)",
-              borderRadius: "20px", 
-            },
-          }}
-        >
-          <ModalContent>
-            <h2>Deseja mesmo excluir?</h2>
-            <ModalButtonsContent>
-              <Button title={"Sim"} width={"100%"} onClick={confirmDelete} />
-              <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
-            </ModalButtonsContent>
-          </ModalContent>
-        </Modal>
-      )}
     </Container>
   );
 };

@@ -18,10 +18,7 @@ export async function PUT(req, { params }) {
 
 export async function GET(req, { params }) {
   try {
-    const tokenInfo =  verifyToken(req);
-    verifyRole(tokenInfo, roles.TEACHER);    
     const textId = Number(params.id);
-
     return await textController.show(textId);
   } catch(error) {
     return handleError(error);
