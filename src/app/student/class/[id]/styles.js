@@ -38,7 +38,11 @@ export const ContentContainer = styled.div`
   padding: 2rem;
   position: relative;
 
-  h1 {
+  h1, h2 {
+    margin-bottom: 4rem;
+  }
+
+  &:last-child {
     margin-bottom: 4rem;
   }
 `;
