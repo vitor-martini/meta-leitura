@@ -39,6 +39,10 @@ export const ContentHeaderContainer = styled.div`
   padding: 2rem;
   position: relative;
 
+  h2 {
+    margin-bottom: 2rem;
+  }
+
   span {
     color: ${({ theme, $grade }) => Number($grade) >= 6 ? theme.COLORS.GREEN : theme.COLORS.DARK_RED };
   }
