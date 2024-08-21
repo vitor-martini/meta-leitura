@@ -39,6 +39,14 @@ export async function middleware(request) {
   }
 
   const roleBasedRedirections = {
+    "/signup": {
+      [roles.TEACHER]: "/teacher",
+      [roles.STUDENT]: "/student"
+    },
+    "/signin": {
+      [roles.TEACHER]: "/teacher",
+      [roles.STUDENT]: "/student"
+    },
     "/": {
       [roles.TEACHER]: "/teacher",
       [roles.STUDENT]: "/student"
