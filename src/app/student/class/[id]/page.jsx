@@ -12,6 +12,7 @@ import {
   AccessKeyContainer,
   AccessKeyWrapper,
   ItensContainer,
+  ContentHeaderContainer,
   HeaderContainer
 } from "./styles";
 import { Header } from "@/components/Header";
@@ -25,6 +26,7 @@ const EditClass = () => {
   const { id } = useParams(); 
   const router = useRouter();
   const [classroom, setClassroom] = useState({}); 
+  const [student, setStudent] = useState({}); 
   const [doneTexts, setDoneTexts] = useState([]); 
   const [undoneTexts, setUndoneTexts] = useState([]); 
 
@@ -49,6 +51,7 @@ const EditClass = () => {
   
         const undoneTexts = texts.filter(x => !doneTexts?.map(y => y.id).includes(x.id));
   
+        setStudent(student);
         setUndoneTexts(undoneTexts);
         setDoneTexts(doneTexts);
         setClassroom(classroom);
@@ -63,13 +66,17 @@ const EditClass = () => {
   return (
     <Container>
       <Header />
-      <ContentContainer>
+      <ContentHeaderContainer
+        $grade={student.grade}
+      >
         <h1>{classroom?.name}</h1>
         <h2>{`Professor(a) ${classroom?.teacher?.name}`}</h2>
+        <h3>Minha nota é: <span>{student.grade}</span></h3>
+        <h3>{`Tenho ${undoneTexts.length} leitura(s) pendentes`}</h3>
         <BackButtonContainer onClick={() => router.push("/student/class")}>
           <IoMdArrowRoundBack size={60}/>
         </BackButtonContainer>
-      </ContentContainer>
+      </ContentHeaderContainer>
       <ContentContainer>
         <h2>Leituras Pendentes</h2>
         {

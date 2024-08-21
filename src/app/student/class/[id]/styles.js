@@ -25,6 +25,25 @@ export const HeaderContainer = styled.div`
   }
 `;
 
+export const ContentHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  gap: 1.6rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: ${({ theme }) => theme.COLORS.WHITE };
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  padding: 2rem;
+  position: relative;
+
+  span {
+    color: ${({ theme, $grade }) => Number($grade) >= 6 ? theme.COLORS.GREEN : theme.COLORS.DARK_RED };
+  }
+`;
+
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,7 +55,6 @@ export const ContentContainer = styled.div`
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 2rem;
-  position: relative;
 
   h1, h2 {
     margin-bottom: 4rem;
