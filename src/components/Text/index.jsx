@@ -18,7 +18,7 @@ import { useAuth } from "@/context/auth";
 import roles from "@/lib/roles";
 import { useRouter } from "next/navigation";
 
-export function Text({ index, text, setClassroom, classroom }) {
+export function Text({ index, text, updateClassroom, classroom }) {
   const router = useRouter();
   const textCover = text?.coverUrl ? `${text.coverUrl}` : textPlaceholder;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,14 +34,9 @@ export function Text({ index, text, setClassroom, classroom }) {
   async function confirmDelete() {
     const textIdToRemove = text.id; 
 
-    const updatedClassroom = {
-      ...classroom,
-      texts: classroom.texts.filter(text => text.id !== textIdToRemove)
-    };
-
     try {
       await api.delete(`/classes/${classroom.id}/text/${textIdToRemove}`);
-      setClassroom(updatedClassroom); 
+      updateClassroom();
       toast.success("Excluído com sucesso!");
     } catch (error) {
       console.log(error);

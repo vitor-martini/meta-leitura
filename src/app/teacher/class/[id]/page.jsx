@@ -35,6 +35,7 @@ const EditClass = () => {
   const [isNew, setIsNew] = useState(false);
   const [name, setName] = useState(""); 
   const [classroom, setClassroom] = useState({}); 
+  const [texts, setTexts] = useState({}); 
   const [newId, setNewId] = useState(undefined); 
   const [accessKey, setAccessKey] = useState(""); 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -138,6 +139,7 @@ const EditClass = () => {
 
         setClassroom(classroom); 
         setName(classroom.name); 
+        setTexts(classroom.texts);
         setAccessKey(classroom.accessKey); 
         setIsNew(false);
         setNewId(id);
@@ -148,6 +150,16 @@ const EditClass = () => {
 
     fetchClass();
   }, [id]);
+
+  async function updateClassroom() {
+    await api.put(`/classes/${classroom.id}/text`);
+    const result = await api.get(`/classes/${id}`);
+    const updatedClassroom = result?.data?.classroom;
+    setClassroom(updatedClassroom); 
+
+    console.log("!asodkposdkpaokd");
+    console.log(updatedClassroom);
+  }
 
   return (
     <Container>
@@ -181,12 +193,11 @@ const EditClass = () => {
           <ContentContainer>
           <h2>Leituras</h2>
           <SearchText
-            setClassroom={setClassroom}
             classroom={classroom}
+            updateClassroom={updateClassroom}
           />
           {
-            classroom?.texts && 
-            classroom?.texts.length > 0 && 
+            texts && texts.length > 0 && 
             (
               <ItensContainer>
               {
@@ -195,7 +206,7 @@ const EditClass = () => {
                     key={i}
                     index={i}
                     text={t}
-                    setClassroom={setClassroom}
+                    updateClassroom={updateClassroom}
                     classroom={classroom}
                   />
                 ))
