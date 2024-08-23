@@ -394,6 +394,24 @@
 					"response": []
 				},
 				{
+					"name": "UpdateGrades",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/classes/1/text"
+					},
+					"response": []
+				},
+				{
 					"name": "Join",
 					"request": {
 						"method": "POST",
