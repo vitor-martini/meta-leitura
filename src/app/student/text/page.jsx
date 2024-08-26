@@ -15,14 +15,6 @@ const TextDashboard = () => {
   const theme = useTheme();
   const [texts, setTexts] = useState([]);
   const [search, setSearch] = useState("");
-  const newText = {
-    id: 0,
-    name: "Adicionar novo texto"
-  };
-
-  function handleNew() {
-    router.push("/teacher/text/new");
-  }
 
   useEffect(() => {
     async function fetchTexts() {
@@ -54,13 +46,6 @@ const TextDashboard = () => {
         onChange={(e => setSearch(e.target.value))}
       />
       <ContentContainer>
-        {
-          !search && (
-            <TextCard onClick={handleNew}
-              data={newText} 
-            />
-          )
-        }
         {
           texts && texts.map(text => (
             <TextCard
