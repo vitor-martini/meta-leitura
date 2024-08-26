@@ -5,19 +5,10 @@ import {
   Container, 
   ContentContainer, 
   BackButtonContainer,
-  FieldsContainer, 
-  ButtonsContainer,
-  ModalContent, 
-  ModalButtonsContent,
-  AccessKeyContainer,
-  AccessKeyWrapper,
   ItensContainer,
   ContentHeaderContainer,
-  HeaderContainer
 } from "./styles";
 import { Header } from "@/components/Header";
-import { Input } from "@/components/Input";
-import { SearchText } from "@/components/SearchText";
 import { Text } from "@/components/Text";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { api } from "@/lib/api";
@@ -81,7 +72,7 @@ const EditClass = () => {
         <h2>Leituras Pendentes</h2>
         {
           undoneTexts && 
-          undoneTexts.length > 0 && 
+          undoneTexts.length > 0 ?
           (
             <ItensContainer>
             {
@@ -96,6 +87,8 @@ const EditClass = () => {
               ))
             }
           </ItensContainer>
+          ): (
+            <h3>Você não tem leituras pendentes!</h3>
           )
         }
       </ContentContainer>
@@ -103,7 +96,7 @@ const EditClass = () => {
         <h2>Leituras Entregues</h2>
         {
           doneTexts && 
-          doneTexts.length > 0 && 
+          doneTexts.length > 0 ?
           (
             <ItensContainer>
             {
@@ -118,8 +111,10 @@ const EditClass = () => {
               ))
             }
           </ItensContainer>
+          ) : (
+            <h3>Você não tem leituras entregues!</h3>
           )
-        }
+        } 
       </ContentContainer>
     </Container>
   );
