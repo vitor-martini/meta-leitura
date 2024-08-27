@@ -11,8 +11,9 @@ import roles from "@/lib/roles";
 
 export function Header() {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, getAuthUser } = useAuth();
   const [avatarUrl, setAvatarUrl] = useState(userPlaceholder);
+  const [role, setRole] = useState(roles.STUDENT);
 
   function redirectHome() {
     router.push("/");
@@ -37,8 +38,12 @@ export function Header() {
 
   useEffect(() => {
     setAvatarUrl(user?.avatarUrl ? `${user.avatarUrl}` : userPlaceholder);
-    console.log("****************************");
-    console.log(user);
+    async function fetchUser() {
+      const authenticatedUser = await getAuthUser();
+      setRole(authenticatedUser.role);
+    }
+    
+    fetchUser();
   }, [user]);
   
   return (
@@ -54,7 +59,7 @@ export function Header() {
           title={"Turmas"}
         />
         {
-          user?.role === roles.STUDENT && (
+          role === roles.TEACHER && (
             <Button
               bgColor={"transparent"}
               onClick={redirectTexts}

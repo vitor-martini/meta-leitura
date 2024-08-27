@@ -15,10 +15,10 @@ export function AuthProvider({ children }) {
       const response = await api.post("/session", { email, password });
       const { user } = response.data; 
 
-      setUser(user);
       delete user.password;
       delete user.role;
       localStorage.setItem("@meta-reading:user", JSON.stringify(user));
+      setUser(user);
 
       return user;
     } catch (error) {
