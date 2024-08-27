@@ -1,4 +1,5 @@
 import FireBaseStorage from "@/lib/fireBaseStorage";
+import roles from "@/lib/roles";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const bcrypt = require("bcrypt");
@@ -12,6 +13,71 @@ const getUserById = async (id) => {
   });
 
   return user;
+};
+
+const getStudentById = async (id) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+      role: roles.STUDENT,
+    },
+    select: {
+      name: true,
+      email: true,
+      grade: true
+    }
+  });
+
+  if (!user) {
+    throw new AppError("Estudante não encontrado!", 404);
+  }
+
+  const classUser = await prisma.classUser.findMany({
+    where: {
+      studentId: id,
+    },
+    include: {
+      class: true,
+    },
+  });
+
+  if (!classUser.length) {
+    return { user };
+  }
+
+  const classes = await Promise.all(
+    classUser.map(async (classUserEntry) => {
+      const classId = classUserEntry.class.id;
+
+      const texts = await prisma.classText.findMany({
+        where: {
+          classId: classId,
+          text: {
+            performances: {
+              none: {
+                studentId: id,
+              },
+            },
+          },
+        },
+        include: {
+          text: true,
+        },
+      });
+
+      return {
+        ...classUserEntry.class,
+        texts: texts.map((textEntry) => textEntry.text),
+      };
+    })
+  );
+
+  const obj = {
+    user,
+    classes,
+  };
+
+  return obj;
 };
 
 const create = async ({ name, email, password }) => {
@@ -104,5 +170,6 @@ module.exports = {
   create,
   update,
   getUserById,
-  updateAvatar
+  updateAvatar,
+  getStudentById
 };

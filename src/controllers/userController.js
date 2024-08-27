@@ -8,6 +8,11 @@ const create = async (req) => {
   return createResponse({ status: 201 });
 };
 
+const getStudentById = async (id) => {
+  const student = await userService.getStudentById(id);
+  return createResponse({ body: { student }, status: 200 });
+};
+
 const update = async (req, userId) => {
   const { name, email, old_password, new_password } = await req.json();
   await userService.update({ userId, name, email, old_password, new_password });
@@ -30,5 +35,6 @@ const updateAvatar = async (req, userId) => {
 module.exports = {
   updateAvatar,
   create,
-  update
+  update,
+  getStudentById
 };
