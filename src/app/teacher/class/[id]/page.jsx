@@ -233,6 +233,7 @@ const EditClass = () => {
                   student={s}
                   setClassroom={setClassroom}
                   classroom={classroom}
+                  texts={texts}
                 />
               ))
             }
