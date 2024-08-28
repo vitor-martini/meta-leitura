@@ -10,7 +10,7 @@ const create = async (req) => {
 
 const getStudentUndoneTexts = async (id) => {
   const undoneTexts = await userService.getStudentUndoneTexts(id);
-  return createResponse({ body: undoneTexts, status: 200 });
+  return createResponse({ body: { undoneTexts }, status: 200 });
 };
 
 const update = async (req, userId) => {
