@@ -333,7 +333,7 @@ const updateGrades = async (classId, teacherId) => {
       .map(p => p.grade)
       .reduce((sum, curr) => sum + curr, 0);
       
-    const newGrade = grade / textIds.length;
+    const newGrade = parseFloat((grade / textIds.length).toFixed(2));
 
     await prisma.user.update({
       where: {
