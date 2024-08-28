@@ -15,16 +15,11 @@ const getUserById = async (id) => {
   return user;
 };
 
-const getStudentById = async (id) => {
-  const user = await prisma.user.findUnique({
+const getStudentUndoneTexts = async (id) => {
+  const user = await prisma.user.findFirst({
     where: {
       id: id,
       role: roles.STUDENT,
-    },
-    select: {
-      name: true,
-      email: true,
-      grade: true
     }
   });
 
@@ -42,10 +37,10 @@ const getStudentById = async (id) => {
   });
 
   if (!classUser.length) {
-    return { user };
+    throw new AppError("O estudante não pertence a nenhuma classe!", 404);
   }
 
-  const classes = await Promise.all(
+  const undoneTexts = await Promise.all(
     classUser.map(async (classUserEntry) => {
       const classId = classUserEntry.class.id;
 
@@ -65,19 +60,15 @@ const getStudentById = async (id) => {
         },
       });
 
-      return {
-        ...classUserEntry.class,
-        texts: texts.map((textEntry) => textEntry.text),
-      };
+      return texts.map(t => ({
+        ...t.text,
+        classId: classUserEntry.class.id,
+        className: classUserEntry.class.name
+      }));
     })
   );
 
-  const obj = {
-    user,
-    classes,
-  };
-
-  return obj;
+  return undoneTexts.flat();
 };
 
 const create = async ({ name, email, password }) => {
@@ -171,5 +162,5 @@ module.exports = {
   update,
   getUserById,
   updateAvatar,
-  getStudentById
+  getStudentUndoneTexts
 };

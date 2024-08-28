@@ -8,9 +8,9 @@ const create = async (req) => {
   return createResponse({ status: 201 });
 };
 
-const getStudentById = async (id) => {
-  const student = await userService.getStudentById(id);
-  return createResponse({ body: { student }, status: 200 });
+const getStudentUndoneTexts = async (id) => {
+  const undoneTexts = await userService.getStudentUndoneTexts(id);
+  return createResponse({ body: undoneTexts, status: 200 });
 };
 
 const update = async (req, userId) => {
@@ -36,5 +36,5 @@ module.exports = {
   updateAvatar,
   create,
   update,
-  getStudentById
+  getStudentUndoneTexts
 };

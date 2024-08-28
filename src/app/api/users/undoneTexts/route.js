@@ -2,11 +2,10 @@ import handleError from "@/lib/errorHandler";
 import { verifyToken } from "@/middleware/authMiddleware";
 const userController = require("@/controllers/userController");
 
-export async function GET(req, { params }) {
+export async function GET(req) {
   try {
-    verifyToken(req);
-    const userId = Number(params.id);
-    return await userController.getStudentById(userId);
+    const { userId } = verifyToken(req);
+    return await userController.getStudentUndoneTexts(userId);
   } catch(error) {
     return handleError(error);
   }
