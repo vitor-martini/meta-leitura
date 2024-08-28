@@ -23,7 +23,7 @@ export function Student({ index, student, setClassroom, classroom, texts }) {
   const [showPerformance, setShowPerformance] = useState(false);
   const studentAvatarUrl = student?.avatarUrl ? `${student.avatarUrl}` : studentPlaceholder;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const undoneTexts = texts.filter(t => !student.performances.map(x => x.text.id).includes(t.id));
+  const [undoneTexts, setUndoneTexts] = useState([]);
 
   async function confirmDelete() {
     const studentIdToRemove = student.id; 
@@ -55,7 +55,9 @@ export function Student({ index, student, setClassroom, classroom, texts }) {
 
   useEffect(() => {
     Modal.setAppElement("#__next");
-  }, []);
+    const undoneTexts = texts.filter(t => !student.performances.map(x => x.text.id).includes(t.id));
+    setUndoneTexts(undoneTexts);
+  }, [texts]);
 
   return (
     <Container $index={index}>

@@ -156,9 +156,7 @@ const EditClass = () => {
     const result = await api.get(`/classes/${id}`);
     const updatedClassroom = result?.data?.classroom;
     setClassroom(updatedClassroom); 
-
-    console.log("!asodkposdkpaokd");
-    console.log(updatedClassroom);
+    setTexts(updatedClassroom.texts);
   }
 
   return (
