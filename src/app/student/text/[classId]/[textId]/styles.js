@@ -13,7 +13,7 @@ export const ContentContainer = styled.div`
   align-items: center; 
   justify-content: center;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   background-color: ${({ theme }) => theme.COLORS.WHITE };
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
@@ -56,25 +56,6 @@ export const CoverContainer = styled.div`
   }
 `;
 
-export const CameraContainer = styled.label`
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 1.2rem;
-  background-color: ${({ theme }) => theme.COLORS.PURPLE };
-  position: absolute;
-  bottom: -16px;
-  right: -16px;
-
-  input {
-    display: none;
-  }
-
-  svg {
-    cursor: pointer;
-    color: ${({ theme }) => theme.COLORS.WHITE };
-  }
-`;
-
 export const FieldsContainer = styled.div`
   flex: 1;
   display: flex;
@@ -87,7 +68,7 @@ export const FieldsContainer = styled.div`
   }
 
   > textarea {
-    height: 30vh;
+    height: 80vh;
   }
 `;
 
