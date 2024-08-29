@@ -15,3 +15,15 @@ export async function GET(req, { params }) {
     return handleError(error);
   }
 }
+
+export async function POST(req, { params }) {
+  try {
+    const { userId } = verifyToken(req);
+    verifyRole(roles.STUDENT);
+    const classId = Number(params.classId);
+    const textId = Number(params.textId);
+    return await classTextController.createAnswer(classId, textId, userId, req);
+  } catch(error) {
+    return handleError(error);
+  }
+}

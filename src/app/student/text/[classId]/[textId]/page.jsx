@@ -34,6 +34,39 @@ const EditText = () => {
   const [questions, setQuestions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  function handleSubmit() {
+    for(let question of questions) {
+      if(!question.selectedChoiceId) {
+        toast.error("Responda todas as perguntas!");
+        return;
+      }
+    }
+    setIsModalOpen(true);
+  }
+
+  async function confirmSubmit() {
+    try {
+      setIsModalOpen(false);
+      await api.post(`/classText/${classId}/${textId}`, {
+        questions
+      });
+      toast.success("Respondido com sucesso!", {
+        onClose: () => {
+          router.push(`/student/text/${classId}/${textId}`);
+        },
+        autoClose: 1500, 
+      });
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error.response?.data?.message;
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error("Não foi possível atualizar");
+      }
+    } 
+  }
+
   useEffect(() => {
     Modal.setAppElement("#__next");
     
@@ -55,38 +88,6 @@ const EditText = () => {
 
     fetchText();
   }, [textId]);
-
-  async function confirmSubmit() {
-    // todo...
-    // if (!questions || questions.length === 0) {
-    //   toast.error("Insira perguntas!");
-    //   return;
-    // }
-
-    // setLoading(true);
-    // try {
-    //   let textId = id;
-    //   await api.put(`/texts/${textId}`, {
-    //     name: title,
-    //     difficulty,
-    //     content,
-    //     questions
-    //   });
-
-    //   sessionStorage.setItem("messageStorage", "Atualizado com sucesso!");
-    //   router.push("/student/text");
-    // } catch (error) {
-    //   console.log(error);
-    //   const errorMessage = error.response?.data?.message;
-    //   if (errorMessage) {
-    //     toast.error(errorMessage);
-    //   } else {
-    //     toast.error("Não foi possível atualizar");
-    //   }
-    // } finally {
-    //   setLoading(false);
-    // }
-  }
 
   return (
     <Container>
@@ -142,7 +143,7 @@ const EditText = () => {
               title={"Enviar"}
               width={"100%"}
               maxWidth={"800px"}
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleSubmit}
             />
           </ButtonsContainer>
         )
