@@ -29,6 +29,7 @@ export function Options({ done, questions, setQuestions }) {
                       value={c.content}
                       checked={c.id === q.selectedChoiceId} 
                       done={done}
+                      isCorrect={c.isCorrect}
                       onCheck={() => handleCheck(q, c.id)}
                     />
                   </QuestionOptions>

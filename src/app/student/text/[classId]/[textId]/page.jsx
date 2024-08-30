@@ -14,7 +14,6 @@ import {
 import bookPlaceholder from "@/assets/book-placeholder.png"; 
 import Image from "next/image";
 import { Header } from "@/components/Header";
-import { Input } from "@/components/Input";
 import { Options } from "@/components/Options";
 import { TextArea } from "@/components/TextArea";
 import { LoadingPage } from "@/components/LoadingPage";
@@ -30,6 +29,7 @@ const EditText = () => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState({}); 
   const [done, setDone] = useState(false); 
+  const [grade, setGrade] = useState(null);
   const [coverUrl, setCoverUrl] = useState(bookPlaceholder); 
   const [questions, setQuestions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,7 +52,7 @@ const EditText = () => {
       });
       toast.success("Respondido com sucesso!", {
         onClose: () => {
-          router.push(`/student/text/${classId}/${textId}`);
+          window.location.reload();
         },
         autoClose: 1500, 
       });
@@ -73,11 +73,12 @@ const EditText = () => {
     async function fetchText() {
       try {
         const result = await api.get(`/classText/${classId}/${textId}`);
-        const done = result?.data?.classText?.done;
+        const grade = result?.data?.classText?.grade;
         const text = result?.data?.classText?.text;
         const questions = result?.data?.classText?.questions;
 
-        setDone(done);
+        setDone(grade != null);
+        setGrade(grade);
         setText(text);
         setCoverUrl(text.coverUrl || bookPlaceholder); 
         setQuestions(questions);
@@ -93,8 +94,13 @@ const EditText = () => {
     <Container>
       {loading && <LoadingPage />}
       <Header />
-      <ContentContainer>
-        <h1>Dados da Leitura</h1>
+      <ContentContainer $grade={grade}>
+        <h1>{text.name}</h1>
+        {
+          done && (
+            <h2>Nota: <span>{grade}</span></h2>
+          )
+        }
         <BackButtonContainer onClick={() => router.back()}>
           <IoMdArrowRoundBack size={60}/>
         </BackButtonContainer>
@@ -110,11 +116,6 @@ const EditText = () => {
           )}
         </CoverContainer>
         <FieldsContainer>
-          <Input
-            placeholder="Título"
-            value={text.name || ""}
-            disabled
-          />
           <TextArea
             placeholder="Conteúdo"
             value={text.content || ""}

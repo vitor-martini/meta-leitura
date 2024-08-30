@@ -2,7 +2,7 @@ const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 
 const show = async (classId, textId, studentId) => {
-  let done = false; 
+  let grade = null; 
   const classText = await prisma.classText.findFirst({
     where: {
       classId,
@@ -46,13 +46,21 @@ const show = async (classId, textId, studentId) => {
     });
 
     if(answer) {
-      done = true;
       question.selectedChoiceId = answer.choiceId;
+
+      const performance = await prisma.performance.findFirst({
+        where: {
+          studentId,
+          textId
+        }
+      });
+
+      grade = performance.grade;
     }
   }
 
   const textObj = {
-    done,
+    grade,
     text,
     questions
   };
@@ -88,8 +96,8 @@ const createAnswer = async (classId, textId, userId, questions) => {
           }
         });
   
-        const correctChoiceId = question.choices.filter(q => q.isCorrect);
-        if(correctChoiceId === question.selectedChoiceId) {
+        const correctChoice = question.choices.filter(c => c.isCorrect)[0];
+        if(correctChoice.id === question.selectedChoiceId) {
           grade+=10;
         }
       }
@@ -115,11 +123,12 @@ const createAnswer = async (classId, textId, userId, questions) => {
           grade: true,
         },
         where: {
-          studentId: userId
+          studentId: userId,
+          classId
         }
       });
-  
-      const finalGrade = Number((totalGrade / numberOfTexts).toFixed(2));
+      
+      const finalGrade = Number((totalGrade._sum.grade / numberOfTexts).toFixed(2));
       await prisma.user.update({
         where: {
           id: userId
