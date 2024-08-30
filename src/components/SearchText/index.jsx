@@ -23,7 +23,6 @@ export function SearchText({ updateClassroom, classroom }) {
   async function handleAddText(text) {
     try {
       await api.post(`/classes/${classroom.id}/text/${text.id}`);
-      await api.put(`/classes/${classroom.id}/text`);
       await updateClassroom();
       setSearch("");
       toast.success("Incluído com sucesso!");

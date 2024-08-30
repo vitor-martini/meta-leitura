@@ -193,6 +193,8 @@ const removeText = async (classId, textId, teacherId) => {
       }
     }
   });
+
+  await updateGrades(classId, teacherId);
 };
 
 const createExcel = async (classId, teacherId) => {
@@ -288,23 +290,11 @@ const addText = async (classId, textId, teacherId) => {
       textId
     }
   });
+
+  await updateGrades(classId, teacherId);
 };
 
 const updateGrades = async (classId, teacherId) => {
-  const classroom = await prisma.class.findFirst({
-    where: {
-      id: classId
-    }
-  });
-
-  if(!classroom) {
-    throw new AppError("Turma não encontrada!", 404);
-  }
-
-  if(classroom.teacherId !== teacherId) {
-    throw new AppError("Você não é o professor da turma!", 404);
-  }
-
   const textsFromClassroom = await prisma.classText.findMany({
     where: {
       classId
@@ -313,7 +303,7 @@ const updateGrades = async (classId, teacherId) => {
   const textIds = textsFromClassroom.map(x => x.textId);
 
   if(textIds.length === 0) {
-    throw new AppError("Não há textos nessa turma!", 404);
+    return;
   }
 
   const performances = await prisma.performance.findMany({

@@ -42,11 +42,6 @@ const addText = async (classId, textId, teacherId) => {
   return createResponse({ body: { message: "Adicionado com sucesso!"}, status: 201 });
 };
 
-const updateGrades = async (classId, teacherId) => {
-  await classService.updateGrades(classId, teacherId);
-  return createResponse({ body: { message: "Notas atualizadas com sucesso!"}, status: 201 });
-};
-
 const create = async (req, userId) => {
   const { name } = await req.json();
   if(!name) {
@@ -87,6 +82,5 @@ module.exports = {
   removeText,
   addText,
   exportExcel,
-  join,
-  updateGrades
+  join
 };

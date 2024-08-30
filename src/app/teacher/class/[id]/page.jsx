@@ -152,7 +152,6 @@ const EditClass = () => {
   }, [id]);
 
   async function updateClassroom() {
-    await api.put(`/classes/${classroom.id}/text`);
     const result = await api.get(`/classes/${id}`);
     const updatedClassroom = result?.data?.classroom;
     setClassroom(updatedClassroom); 
