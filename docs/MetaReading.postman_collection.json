@@ -587,35 +587,6 @@
 					"response": []
 				},
 				{
-					"name": "UpdateGrades",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{NEXT_URL_API}}/api/classes/1/text",
-							"host": [
-								"{{NEXT_URL_API}}"
-							],
-							"path": [
-								"api",
-								"classes",
-								"1",
-								"text"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Join",
 					"request": {
 						"method": "POST",
@@ -786,6 +757,60 @@
 							"path": [
 								"api",
 								"session"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ClassText",
+			"item": [
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classText/1/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classText",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createAnswer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"questions\": [\n        {\n            \"id\": 6,\n            \"selectedChoiceId\": 26,\n            \"choices\": [\n                {\n                    \"id\": 26,\n                    \"questionId\": 6,\n                    \"isCorrect\": false,\n                    \"content\": \"A1\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                },\n                {\n                    \"id\": 27,\n                    \"questionId\": 6,\n                    \"isCorrect\": true,\n                    \"content\": \"B1\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                },\n                {\n                    \"id\": 28,\n                    \"questionId\": 6,\n                    \"isCorrect\": false,\n                    \"content\": \"C1\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                },\n                {\n                    \"id\": 29,\n                    \"questionId\": 6,\n                    \"isCorrect\": false,\n                    \"content\": \"D1\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                }\n            ]\n        },\n        {\n            \"id\": 7,\n            \"selectedChoiceId\": 31,\n            \"choices\": [\n                {\n                    \"id\": 30,\n                    \"questionId\": 7,\n                    \"isCorrect\": false,\n                    \"content\": \"A2\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                },\n                {\n                    \"id\": 31,\n                    \"questionId\": 7,\n                    \"isCorrect\": false,\n                    \"content\": \"B2\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                },\n                {\n                    \"id\": 32,\n                    \"questionId\": 7,\n                    \"isCorrect\": false,\n                    \"content\": \"C2\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                },\n                {\n                    \"id\": 33,\n                    \"questionId\": 7,\n                    \"isCorrect\": true,\n                    \"content\": \"D2\",\n                    \"createdAt\": \"2024-08-28T01:48:37.817Z\",\n                    \"updatedAt\": \"2024-08-28T01:48:37.817Z\"\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classText/1/2",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classText",
+								"1",
+								"2"
 							]
 						}
 					},

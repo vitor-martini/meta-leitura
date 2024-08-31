@@ -14,7 +14,6 @@ model User {
   password     String
   avatarUrl    String?       @map("avatar_url")
   role         Role          @default(STUDENT)
-  grade        Float?
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   classes      Class[]
@@ -41,10 +40,11 @@ model Class {
 }
 
 model ClassUser {
-  class     Class @relation(fields: [classId], references: [id])
-  classId   Int   @map("class_id")
-  student   User  @relation(fields: [studentId], references: [id])
-  studentId Int   @map("student_id")
+  class     Class  @relation(fields: [classId], references: [id])
+  classId   Int    @map("class_id")
+  student   User   @relation(fields: [studentId], references: [id])
+  studentId Int    @map("student_id")
+  grade     Float?
 
   @@id([classId, studentId])
   @@map("class_user")

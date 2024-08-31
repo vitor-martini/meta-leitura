@@ -16,45 +16,50 @@ async function createUsers() {
     },
   });
 
+  const students = [];
   for (let i = 1; i <= 20; i++) {
-    await prisma.user.create({
-      data: {
-        email: `student${i}@example.com`,
-        name: `Student ${i}`,
-        password: hashedPassword,
-      },
+    students.push({
+      email: `student${i}@example.com`,
+      name: `Student ${i}`,
+      password: hashedPassword,
     });
   }
+
+  await prisma.user.createMany({
+    data: students,
+  });
 }
 
 async function createClasses() {
   const teacher = await prisma.user.findFirst({
-    where: {
-      email: "teacher@example.com",
-    },
+    where: { email: "teacher@example.com" },
   });
 
+  const classes = [];
   for (let i = 1; i <= 2; i++) {
-    const accessKey = (i === 1 ? "juQA6st0" : "1RctlB69");
-    const newClass = await prisma.class.create({
-      data: {
-        name: `Class ${i}`,
-        teacherId: teacher.id,
-        accessKey
-      },
+    const accessKey = i === 1 ? "juQA6st0" : "1RctlB69";
+    classes.push({
+      name: `Class ${i}`,
+      teacherId: teacher.id,
+      accessKey,
     });
+  }
 
+  await prisma.class.createMany({
+    data: classes,
+  });
+
+  const createdClasses = await prisma.class.findMany();
+  for (let i = 0; i < createdClasses.length; i++) {
     for (let j = 1; j <= 10; j++) {
-      const studentEmail = `student${(i - 1) * 10 + j}@example.com`;
+      const studentEmail = `student${i * 10 + j}@example.com`;
       const student = await prisma.user.findFirst({
-        where: {
-          email: studentEmail,
-        },
+        where: { email: studentEmail },
       });
 
       await prisma.classUser.create({
         data: {
-          classId: newClass.id,
+          classId: createdClasses[i].id,
           studentId: student.id,
         },
       });
@@ -62,7 +67,7 @@ async function createClasses() {
   }
 }
 
-async function createText() {
+async function createTextAndQuestions() {
   const newText = await prisma.text.create({
     data: {
       name: "Sample Text",
@@ -72,7 +77,6 @@ async function createText() {
   });
 
   const classes = await prisma.class.findMany();
-
   for (const cls of classes) {
     await prisma.classText.create({
       data: {
@@ -81,57 +85,53 @@ async function createText() {
       },
     });
   }
-}
 
-async function createQuestions() {
-  const text = await prisma.text.findFirst({
-    where: {
-      name: "Sample Text",
-    },
-  });
-
-  let choiceId = 0;
   for (let i = 1; i <= 5; i++) {
     const question = await prisma.question.create({
       data: {
-        textId: text.id,
+        textId: newText.id,
         statement: `Sample question ${i} about the text.`,
       },
     });
 
     for (let j = 1; j <= 5; j++) {
-      choiceId++;
-      const isCorrect = j === 1; 
       await prisma.choice.create({
         data: {
           questionId: question.id,
-          isCorrect,
-          content: `Choice ${choiceId} content.`,
+          isCorrect: j === 1,
+          content: `Choice ${j} content.`,
         },
       });
     }
   }
 }
 
-async function createAnswers() {
-  const students = await prisma.user.findMany({
+async function createAnswersAndPerformance() {
+  const class1 = await prisma.class.findFirst({
+    where: { name: "Class 1" },
+  });
+
+  const studentsClass1 = await prisma.user.findMany({
     where: {
-      id: {
-        in: Array.from({ length: 15 }, (_, i) => i + 2),  
+      email: {
+        in: Array.from({ length: 10 }, (_, i) => `student${i + 1}@example.com`),
       },
     },
   });
 
   const questions = await prisma.question.findMany();
 
-  for (const student of students) {
+  for (const student of studentsClass1) {
+    let totalGrade = 0;
+
     for (const question of questions) {
       const choices = await prisma.choice.findMany({
-        where: {
-          questionId: question.id,
-        },
+        where: { questionId: question.id },
       });
-      const selectedChoice = choices[0];
+
+      const selectedChoice = choices.find((choice) => choice.isCorrect);
+      totalGrade += selectedChoice ? 2 : 0;
+
       await prisma.answer.create({
         data: {
           questionId: question.id,
@@ -140,77 +140,42 @@ async function createAnswers() {
         },
       });
     }
-  }
-}
 
-async function createPerformance() {
-  const students = await prisma.user.findMany({
-    where: {
-      id: {
-        in: Array.from({ length: 15 }, (_, i) => i + 2), 
+    await prisma.performance.create({
+      data: {
+        studentId: student.id,
+        classId: class1.id,
+        textId: questions[0].textId,
+        grade: totalGrade,
       },
-      role: "STUDENT",
-    },
+    });
+  }
+
+  const classTexts = await prisma.classText.findMany({
+    where: { classId: class1.id },
   });
 
-  const classTexts = await prisma.classText.findMany(); 
-
-  for (const student of students) {
-    let totalStudentValue = 0;
-    let performanceCount = 0;
-
-    for (const classText of classTexts) {
-      const questions = await prisma.question.findMany({
-        where: {
-          textId: classText.textId,
-        },
-      });
-
-      let totalValue = 0;
-
-      for (const question of questions) {
-        const answer = await prisma.answer.findFirst({
-          where: {
-            questionId: question.id,
-            studentId: student.id,
-          },
-        });
-
-        if (answer) {
-          const choice = await prisma.choice.findFirst({
-            where: {
-              id: answer.choiceId,
-              isCorrect: true,
-            },
-          });
-
-          if (choice) {
-            totalValue += 2;
-          }
-        }
-      }
-
-      await prisma.performance.create({
-        data: {
-          studentId: student.id,
-          classId: classText.classId, 
-          textId: classText.textId,  
-          grade: totalValue,
-        },
-      });
-
-      totalStudentValue += totalValue;
-      performanceCount++;
-    }
-
-    const averageGrade = totalStudentValue / performanceCount;
-    await prisma.user.update({
+  for (const student of studentsClass1) {
+    const performances = await prisma.performance.findMany({
       where: {
-        id: student.id,
+        studentId: student.id,
+        classId: class1.id,
+        textId: { in: classTexts.map((ct) => ct.textId) },
       },
-      data: {
-        grade: averageGrade,
+    });
+
+    const averageGrade =
+      performances.reduce((sum, perf) => sum + perf.grade, 0) /
+      performances.length;
+
+    await prisma.classUser.update({
+      where: {
+        classId_studentId: {
+          classId: class1.id,
+          studentId: student.id,
+        },
       },
+      data: { grade: averageGrade },
     });
   }
 }
@@ -218,10 +183,8 @@ async function createPerformance() {
 async function main() {
   await createUsers();
   await createClasses();
-  await createText();
-  await createQuestions();
-  await createAnswers();
-  await createPerformance();
+  await createTextAndQuestions();
+  await createAnswersAndPerformance();
 }
 
 main()

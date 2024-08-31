@@ -194,7 +194,7 @@ const removeText = async (classId, textId, teacherId) => {
     }
   });
 
-  await updateGrades(classId, teacherId);
+  await updateGrades(classId);
 };
 
 const createExcel = async (classId, teacherId) => {
@@ -221,9 +221,9 @@ const createExcel = async (classId, teacherId) => {
       },
     },
     select: {
+      id: true,
       name: true,
-      email: true,
-      grade: true,
+      email: true
     },
   });
 
@@ -231,11 +231,18 @@ const createExcel = async (classId, teacherId) => {
     throw new AppError("Nenhum estudante encontrado nesta turma!", 404);
   }
 
+  const classUsers = await prisma.classUser.findMany({
+    where: {
+        classId
+      }
+  });
+
   const studentsFormatted = students.map(s => ({
     "Nome": s.name,
     "E-mail": s.email,
-    "Nota": s.grade,
+    "Nota": classUsers.filter(x => x.studentId === s.id)[0].grade,
   }));
+
   const worksheet = XLSX.utils.json_to_sheet(studentsFormatted);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, classroom.name);
@@ -291,10 +298,10 @@ const addText = async (classId, textId, teacherId) => {
     }
   });
 
-  await updateGrades(classId, teacherId);
+  await updateGrades(classId);
 };
 
-const updateGrades = async (classId, teacherId) => {
+const updateGrades = async (classId) => {
   const textsFromClassroom = await prisma.classText.findMany({
     where: {
       classId
@@ -317,6 +324,7 @@ const updateGrades = async (classId, teacherId) => {
 
   const studentsId = new Set(performances.map(x => x.studentId));
 
+  console.log(textIds.length);
   for(let id of studentsId) {
     const grade = performances
       .filter(p => p.studentId === id)
@@ -324,10 +332,12 @@ const updateGrades = async (classId, teacherId) => {
       .reduce((sum, curr) => sum + curr, 0);
       
     const newGrade = parseFloat((grade / textIds.length).toFixed(2));
-
-    await prisma.user.update({
+    await prisma.classUser.update({
       where: {
-        id
+        classId_studentId: {
+          classId: classId,
+          studentId: id,
+        },
       },
       data: {
         grade: newGrade
@@ -358,12 +368,12 @@ const getById = async (id, userId, role) => {
       classUser: {
         where: isTeacher ? {} : { studentId: userId },
         select: {
+          grade: true,
           student: {
             select: {
               id: true,
               name: true,
               avatarUrl: true,
-              grade: true,
               performances: {
                 where: { classId: id },
                 select: {
@@ -414,6 +424,7 @@ const getById = async (id, userId, role) => {
 
   const students = classroom.classUser.map((x) => ({
     ...x.student,
+    grade: x.grade,
     performances: x.student.performances.map((performance) => ({
       id: performance.id,
       grade: performance.grade,

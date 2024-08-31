@@ -129,9 +129,10 @@ const createAnswer = async (classId, textId, userId, questions) => {
       });
       
       const finalGrade = Number((totalGrade._sum.grade / numberOfTexts).toFixed(2));
-      await prisma.user.update({
+      await prisma.classUser.update({
         where: {
-          id: userId
+          studentId: userId,
+          classId
         },
         data: {
           grade: finalGrade
