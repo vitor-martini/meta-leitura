@@ -62,7 +62,11 @@ const EditClass = () => {
       >
         <h1>{classroom?.name}</h1>
         <h2>{`Professor(a) ${classroom?.teacher?.name}`}</h2>
-        <h3>Minha nota é: <span>{student.grade}</span></h3>
+        {
+          !(student.grade === null || student.grade === undefined) && (
+            <h3>Minha nota é: <span>{student.grade}</span></h3>
+          )
+        }
         <h3>{`Tenho ${undoneTexts.length} leitura(s) pendentes`}</h3>
         <BackButtonContainer onClick={() => router.push("/student/class")}>
           <IoMdArrowRoundBack size={60}/>

@@ -75,7 +75,7 @@ export function Text({ index, text, updateClassroom, classroom }) {
         $grade={text.grade}
       >
         {
-          text.grade && (
+          !(text.grade === undefined || text.grade === null) && (
             <h1>{text.grade}</h1>
           )
         }

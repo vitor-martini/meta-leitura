@@ -81,68 +81,65 @@ const createAnswer = async (classId, textId, userId, questions) => {
     throw new AppError("Essa leitura já foi respondida pelo aluno!", 400);
   }
 
-  try {
-    await prisma.$transaction(async (prisma) => {
-      const numberOfQuestions = questions.length;
-      let grade = 0;
-  
-      for(let question of questions) {
+  await prisma.$transaction(async (prisma) => {
+    const numberOfQuestions = questions.length;
+    let grade = 0;
 
-        await prisma.answer.create({
-          data: {
-            questionId: question.id,
-            choiceId: question.selectedChoiceId,
-            studentId: userId          
-          }
-        });
-  
-        const correctChoice = question.choices.filter(c => c.isCorrect)[0];
-        if(correctChoice.id === question.selectedChoiceId) {
-          grade+=10;
+    for(let question of questions) {
+
+      await prisma.answer.create({
+        data: {
+          questionId: question.id,
+          choiceId: question.selectedChoiceId,
+          studentId: userId          
         }
+      });
+
+      const correctChoice = question.choices.filter(c => c.isCorrect)[0];
+      if(correctChoice.id === question.selectedChoiceId) {
+        grade+=10;
       }
-  
-      grade = Number((grade / numberOfQuestions).toFixed(2));
-      await prisma.performance.create({
-        data: {
-          studentId: userId,
-          classId,
-          textId,
-          grade
-        }
-      });
-  
-      const numberOfTexts = await prisma.classText.count({
-        where: {
-          classId
-        }
-      });
-  
-      const totalGrade = await prisma.performance.aggregate({
-        _sum: {
-          grade: true,
-        },
-        where: {
-          studentId: userId,
-          classId
-        }
-      });
-      
-      const finalGrade = Number((totalGrade._sum.grade / numberOfTexts).toFixed(2));
-      await prisma.classUser.update({
-        where: {
-          studentId: userId,
-          classId
-        },
-        data: {
-          grade: finalGrade
-        }
-      });
+    }
+
+    grade = Number((grade / numberOfQuestions).toFixed(2));
+    await prisma.performance.create({
+      data: {
+        studentId: userId,
+        classId,
+        textId,
+        grade
+      }
     });
-  } catch(error) {
-    console.log(error);
-  }
-  
+
+    const numberOfTexts = await prisma.classText.count({
+      where: {
+        classId
+      }
+    });
+
+    const totalGrade = await prisma.performance.aggregate({
+      _sum: {
+        grade: true,
+      },
+      where: {
+        studentId: userId,
+        classId
+      }
+    });
+    
+    const finalGrade = Number((totalGrade._sum.grade / numberOfTexts).toFixed(2));
+    await prisma.classUser.update({
+      where: {
+        classId_studentId: {
+          studentId: userId,
+          classId
+        },
+      },
+      data: {
+        grade: finalGrade
+      }
+    });
+  });
 };
 
 module.exports = {
