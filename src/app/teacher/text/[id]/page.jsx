@@ -17,7 +17,7 @@ import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { Questions } from "@/components/Questions";
-import { TextArea } from "@/components/TextArea";
+import { TextEditor } from "@/components/TextEditor";
 import { LoadingPage } from "@/components/LoadingPage";
 import { Button } from "@/components/Button";
 import { SelectInput } from "@/components/SelectInput";
@@ -201,10 +201,9 @@ const EditText = () => {
             selectedOption={difficulty}
             setSelectedOption={setDifficulty}
           />
-          <TextArea
-            placeholder="Conteúdo"
+          <TextEditor
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={setContent}
           />
         </FieldsContainer>
       </ContentContainer>

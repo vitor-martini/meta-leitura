@@ -15,7 +15,7 @@ import bookPlaceholder from "@/assets/book-placeholder.png";
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Options } from "@/components/Options";
-import { TextArea } from "@/components/TextArea";
+import { ReadOnlyContent } from "@/components/ReadOnlyContent";
 import { LoadingPage } from "@/components/LoadingPage";
 import { Button } from "@/components/Button";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -116,11 +116,7 @@ const EditText = () => {
           )}
         </CoverContainer>
         <FieldsContainer>
-          <TextArea
-            placeholder="Conteúdo"
-            value={text.content || ""}
-            disabled
-          />
+          <ReadOnlyContent content={text.content || ""} />
         </FieldsContainer>
       </ContentContainer>
       {
