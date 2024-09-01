@@ -43,3 +43,8 @@ Here some exemples of how the project works:
 
 ### Student Class Details
 ![Student Class Details](./docs/demo6.png)
+
+## Publish
+
+Temporarily, the application can be accessed by Render via the following URL:
+[https://meta-reading-unifesp.onrender.com/](https://meta-reading-unifesp.onrender.com/)
