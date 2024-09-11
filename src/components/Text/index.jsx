@@ -28,7 +28,13 @@ export function Text({ index, text, updateClassroom, classroom }) {
   function handleTextClick() {
     if(user?.role === roles.STUDENT) {
       router.push(`/student/text/${classroom.id}/${text.id}`);
-    }
+    } 
+  }
+
+  function handleEditText() {
+    if(user?.role === roles.TEACHER) {
+      router.push(`/teacher/text/${text.id}`);
+    } 
   }
 
   async function confirmDelete() {
@@ -86,6 +92,7 @@ export function Text({ index, text, updateClassroom, classroom }) {
             fill 
             quality={100}
             priority
+            onClick={handleEditText}
           />
         </CoverContainer>
         <p>{text.name}</p>
