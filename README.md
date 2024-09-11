@@ -21,4 +21,30 @@ Meta Reading is a social project developed as part of the Computer Science under
 - **Docker** : Containerization tool to isolate the development environment.
  
 - **ESLint** : Tool to ensure code quality and consistency.
- 
+
+## Screenshots
+
+Here some exemples of how the project works:
+
+### Login Page
+![Login Page](./docs/demo1.png)
+
+### Student Home Page
+![Student Home Page](./docs/demo2.png)
+
+### Student Task Part 1
+![Student Task Part 1](./docs/demo3.png)
+
+### Student Task Part 2
+![Student Task Part 2](./docs/demo4.png)
+
+### Student Class Page
+![Student Class Page](./docs/demo5.png)
+
+### Student Class Details
+![Student Class Details](./docs/demo6.png)
+
+## Publish
+
+Temporarily, the application can be accessed by Render via the following URL:
+[https://meta-reading-unifesp.onrender.com/](https://meta-reading-unifesp.onrender.com/)
